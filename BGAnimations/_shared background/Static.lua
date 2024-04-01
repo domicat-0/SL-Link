@@ -14,6 +14,7 @@ local SharedBackground = {
 	["ScreenSelectStyle"] = true,
 	["ScreenSelectPlayMode"] = true,
 	["ScreenSelectPlayMode2"] = true,
+	["ScreenSelectPlayModeVersus"] = true,
 	["ScreenProfileLoad"] = true, -- hidden screen	
 
 	-- false until Technique is selected

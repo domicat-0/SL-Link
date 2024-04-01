@@ -55,6 +55,14 @@ SelectMusicOrCourse = function()
 	end
 end
 
+Branch.AllowLink = function()
+	local style = GAMESTATE:GetCurrentStyle():GetName():gsub("8", "")
+	if style  == "versus" then
+		return "ScreenSelectPlayModeVersus"
+	end
+	return "ScreenSelectPlayMode"
+end
+
 Branch.AllowScreenSelectProfile = function()
 	if ThemePrefs.Get("AllowScreenSelectProfile") then
 		return "ScreenSelectProfile"
