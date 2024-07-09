@@ -386,6 +386,7 @@ SetGameModePreferences = function()
 	-- Thus, scores from FA+ mode will continue to go into ECFA-Stats.xml.
 	prefix["FA+"] = "ECFA-"
 	prefix["Casual"] = "Casual-"
+	prefix["Link"] = "Link-"
 
 	if PROFILEMAN:GetStatsPrefix() ~= prefix[SL.Global.GameMode] then
 		PROFILEMAN:SetStatsPrefix(prefix[SL.Global.GameMode])

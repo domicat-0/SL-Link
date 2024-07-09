@@ -50,6 +50,9 @@ SelectMusicOrCourse = function()
 		if SL.Global.GameMode == "Casual" then
 			return "ScreenSelectMusicCasual"
 		end
+		if SL.Global.GameMode == "Link" then
+			return "ScreenSelectMusicLink"
+		end
 
 		return "ScreenSelectMusic"
 	end
@@ -203,8 +206,11 @@ Branch.AllowScreenEvalSummary = function()
 end
 
 Branch.AfterProfileSave = function()
+	
+	if SL.Global.GameMode == "Link" then
+		return Branch.AfterProfileSaveSummary()
 
-	if PREFSMAN:GetPreference("EventMode") then
+	elseif PREFSMAN:GetPreference("EventMode") then
 		return SelectMusicOrCourse()
 
 	elseif GAMESTATE:IsCourseMode() then
@@ -284,5 +290,43 @@ Branch.AfterProfileSaveSummary = function()
 		return "ScreenGameOver"
 	else
 		return Branch.AfterInit()
+	end
+end
+
+Branch.AfterResultsLink = function()
+	local prev_songs = {}
+	local scores_p1 = {}
+	local scores_p2 = {}
+
+	for i, stage in ipairs(SL.Global.Stages.Stats) do
+		prev_songs[#prev_songs+1] = (stage.song)
+		scores_p1[#scores_p1+1] = SL["P1"].Stages.Stats[i].score
+		scores_p2[#scores_p2+1] = SL["P2"].Stages.Stats[i].score
+	end
+
+	local function GetScoreP1() 
+		local sp1 = 0
+		for i, stage in ipairs(SL.Global.Stages.Stats) do
+			if scores_p1[i] > scores_p2[i] then
+				sp1 = sp1 + 1
+			end
+		end
+		return sp1
+	end
+
+	local function GetScoreP2() 
+		local sp2 = 0
+		for i, stage in ipairs(SL.Global.Stages.Stats) do
+			if scores_p2[i] > scores_p1[i] then
+				sp2 = sp2 + 1
+			end
+		end
+		return sp2
+	end
+
+	if GetScoreP1() >= 2 or GetScoreP2() >= 2 or #prev_songs >= 5 then
+		return "ScreenEvaluationSummary"
+	else
+		return "ScreenSelectMusicLink"
 	end
 end
