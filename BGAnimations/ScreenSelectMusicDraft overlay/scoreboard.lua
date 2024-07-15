@@ -47,5 +47,4 @@ af[#af+1] = LoadFont(ThemePrefs.Get("ThemeFont") .. " Bold")..{
 	end
 }
 
-SCREENMAN:SystemMessage("F")
 return af

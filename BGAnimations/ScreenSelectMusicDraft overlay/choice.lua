@@ -22,7 +22,12 @@ end
 local af = Def.ActorFrame{
 	Song=song,
 	InitCommand=function(self)
-		self:aux(0):x(-450+(150*index))
+		self:aux(0):x(-400+(100*index))
+		if index % 2 == 0 then
+			self:y(100)
+		else
+			self:y(-60)
+		end
 	end,
 	GainFocusCommand=function(self)
 		self:finishtweening():linear(0.125):zoom(1)
@@ -39,8 +44,10 @@ local af = Def.ActorFrame{
 			self:diffusealpha(1)
 		elseif self:getaux() == 1 then
 			self:diffuse(0.5, 0.25, 0.25, 0.6)
-		else
+		elseif self:getaux() == 2 then
 			self:diffuse(0.25, 0.25, 0.5, 0.6)
+		else
+			self:diffuse(0, 0, 0, 0.4)
 		end
 	end,
 	ChosenCommand=function(self)
@@ -63,7 +70,7 @@ af[#af+1] = LoadFont("Common Normal")..{
 
 af[#af+1] = LoadActor(path)..{
 	InitCommand=function(self)
-		self:y(-40):setsize(130, 130):zoom(1)
+		self:y(-40):setsize(120, 120):zoom(1)
 	end
 }
 

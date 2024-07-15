@@ -251,7 +251,7 @@ SL = {
 			color("#c9855e"),	-- peach?
 			color("#ff3030")	-- red (slightly lightened)
 		},
-		Link = {
+		Draft = {
 			color("#21CCE8"),	-- blue
 			color("#e29c18"),	-- gold
 			color("#66c955"),	-- green
@@ -310,7 +310,7 @@ SL = {
 			TimingWindowSecondsMine=0.070000,
 			TimingWindowSecondsRoll=0.350000,
 		},
-		Link = {
+		Draft = {
 			TimingWindowAdd=0.0015,
 			RegenComboAfterMiss=5,
 			MaxRegenComboAfterMiss=10,
@@ -442,7 +442,7 @@ SL = {
 
 			InitialValue=0.5,
 		},
-		Link = {
+		Draft = {
 			PercentScoreWeightW1=5,
 			PercentScoreWeightW2=4,
 			PercentScoreWeightW3=2,

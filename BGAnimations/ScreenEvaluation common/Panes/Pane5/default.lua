@@ -19,7 +19,7 @@ local worst_window = GetTimingWindow(num_judgments_available)
 
 local abbreviations = {
 	ITG = { "Fan", "Ex", "Gr", "Dec", "WO" },
-	Link = {"Fan", "Ex", "Gr", "Dec", "WO"},
+	Draft = {"Fan", "Ex", "Gr", "Dec", "WO"},
 	["FA+"] = { "Fan", "Fan", "Ex", "Gr", "Dec" },
 }
 

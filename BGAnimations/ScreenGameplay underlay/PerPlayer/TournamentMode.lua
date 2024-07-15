@@ -3,7 +3,7 @@ local pn = ToEnumShortString(player)
 local mods = SL[pn].ActiveModifiers
 
 --Let's see if we need to let  the player know that they are nice.
-if (ThemePrefs.Get("EnableTournamentMode") or SL.Global.GameMode == "Link") and ThemePrefs.Get("EnforceNoCmod") then
+if (ThemePrefs.Get("EnableTournamentMode") or SL.Global.GameMode == "Draft") and ThemePrefs.Get("EnforceNoCmod") then
     return Def.ActorFrame{
         OnCommand=function(self)
             local song = GAMESTATE:GetCurrentSong()

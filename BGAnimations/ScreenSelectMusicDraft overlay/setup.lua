@@ -80,7 +80,7 @@ end
 GAMESTATE:SetCurrentPlayMode('PlayMode_Regular')
 
 local groups = GetVersusGroups()
-local songlist = GetRandomSongs(groups[1], 5)
+local songlist = GetRandomSongs(groups[1], 7)
 local current_song = songlist[1]
 GAMESTATE:SetCurrentSong(current_song)
 local steps = current_song:GetOneSteps(0, "Difficulty_Challenge")

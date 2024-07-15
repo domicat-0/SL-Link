@@ -37,6 +37,7 @@ end
 
 ------------------------------------------------------------
 
+
 if not Branch then Branch = {} end
 
 Branch.AfterScreenRankingDouble = function()
@@ -50,15 +51,16 @@ SelectMusicOrCourse = function()
 		if SL.Global.GameMode == "Casual" then
 			return "ScreenSelectMusicCasual"
 		end
-		if SL.Global.GameMode == "Link" then
-			return "ScreenSelectMusicLink"
+		if SL.Global.GameMode == "Draft" then
+			SL.Global.FirstVisit = true
+			return "ScreenSelectMusicDraft"
 		end
 
 		return "ScreenSelectMusic"
 	end
 end
 
-Branch.AllowLink = function()
+Branch.AllowDraft = function()
 	local style = GAMESTATE:GetCurrentStyle():GetName():gsub("8", "")
 	if style  == "versus" then
 		return "ScreenSelectPlayModeVersus"
@@ -207,8 +209,8 @@ end
 
 Branch.AfterProfileSave = function()
 	
-	if SL.Global.GameMode == "Link" then
-		return Branch.AfterProfileSaveSummary()
+	if SL.Global.GameMode == "Draft" then
+		return Branch.AfterResultsDraft()
 
 	elseif PREFSMAN:GetPreference("EventMode") then
 		return SelectMusicOrCourse()
@@ -293,7 +295,7 @@ Branch.AfterProfileSaveSummary = function()
 	end
 end
 
-Branch.AfterResultsLink = function()
+Branch.AfterResultsDraft = function()
 	local prev_songs = {}
 	local scores_p1 = {}
 	local scores_p2 = {}
@@ -324,9 +326,27 @@ Branch.AfterResultsLink = function()
 		return sp2
 	end
 
-	if GetScoreP1() >= 2 or GetScoreP2() >= 2 or #prev_songs >= 5 then
+	if GetScoreP1() >= 2 or GetScoreP2() >= 2 or #prev_songs >= 3 then
 		return "ScreenEvaluationSummary"
 	else
-		return "ScreenSelectMusicLink"
+		return Branch.BeforeGameplayDraft()
+	end
+end
+
+Branch.BeforeGameplayDraft = function()
+	return "ScreenSelectMusicDraft"
+end
+
+Branch.ToGameplayDraft = function()
+	if SL.Global.FirstVisit == true then
+		SL.Global.FirstVisit = false
+		return "ScreenSelectMusicDraft"
+	else
+		local song = SL.Global.SelectedSongs[#SL.Global.Stages.Stats+1]
+		GAMESTATE:SetCurrentSong(song)
+		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
+		GAMESTATE:SetCurrentSteps(PLAYER_1, steps)
+		GAMESTATE:SetCurrentSteps(PLAYER_2, steps)
+		return "ScreenGameplay"
 	end
 end
