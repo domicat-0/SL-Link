@@ -259,6 +259,14 @@ SL = {
 			color("#c9855e"),	-- peach?
 			color("#ff3030")	-- red (slightly lightened)
 		},
+		Link = {
+			color("#9f9fff"),	-- purple/pink
+			color("#21cce8"),	-- blue
+			color("#e29c18"),	-- gold
+			color("#66c955"),	-- green
+			color("#7f7f7f"),	-- gary
+			color("#ff3030")	-- red (slightly lightened)
+		},
 		["FA+"] = {
 			color("#21CCE8"),	-- blue
 			color("#ffffff"),	-- white
@@ -327,6 +335,27 @@ SL = {
 			TimingWindowSecondsW3=0.102000,
 			TimingWindowSecondsW4=0.135000,
 			TimingWindowSecondsW5=0.180000,
+			TimingWindowSecondsHold=0.320000,
+			TimingWindowSecondsMine=0.070000,
+			TimingWindowSecondsRoll=0.350000,
+		},
+		Link = {
+			TimingWindowAdd=0.0015,
+			RegenComboAfterMiss=5,
+			MaxRegenComboAfterMiss=10,
+			MinTNSToHideNotes="TapNoteScore_W3",
+			MinTNSToScoreNotes=ThemePrefs.Get("RescoreEarlyHits") and "TapNoteScore_W3" or "TapNoteScore_None",
+			HarshHotLifePenalty=true,
+
+			PercentageScoring=true,
+			AllowW1="AllowW1_Everywhere",
+			SubSortByNumSteps=true,
+
+			TimingWindowSecondsW1=0.008500,
+			TimingWindowSecondsW2=0.021500,
+			TimingWindowSecondsW3=0.043000,
+			TimingWindowSecondsW4=0.102000,
+			TimingWindowSecondsW5=0.135000,
 			TimingWindowSecondsHold=0.320000,
 			TimingWindowSecondsMine=0.070000,
 			TimingWindowSecondsRoll=0.350000,
@@ -476,6 +505,39 @@ SL = {
 			LifePercentChangeHitMine=0,
 
 			InitialValue=0,
+		},
+		Link = {
+			PercentScoreWeightW1=5.5,
+			PercentScoreWeightW2=5,
+			PercentScoreWeightW3=4,
+			PercentScoreWeightW4=2,
+			PercentScoreWeightW5=0,
+			PercentScoreWeightMiss=-12,
+			PercentScoreWeightLetGo=0,
+			PercentScoreWeightHeld=IsGame("pump") and 0 or 5.5,
+			PercentScoreWeightHitMine=-6,
+			PercentScoreWeightCheckpointHit=0,
+
+			GradeWeightW1=5.5,
+			GradeWeightW2=5,
+			GradeWeightW3=4,
+			GradeWeightW4=2,
+			GradeWeightW5=0,
+			GradeWeightMiss=-12,
+			GradeWeightLetGo=0,
+			GradeWeightHeld=IsGame("pump") and 0 or 5.5,
+			GradeWeightHitMine=-6,
+			GradeWeightCheckpointHit=0,
+
+			LifePercentChangeW1=0,
+			LifePercentChangeW2=0,
+			LifePercentChangeW3=0,
+			LifePercentChangeW4=0,
+			LifePercentChangeW5=0,
+			LifePercentChangeMiss=0,
+			LifePercentChangeLetGo=0,
+			LifePercentChangeHeld=0,
+			LifePercentChangeHitMine=0,
 		},
 	},
 	ExWeights = {
