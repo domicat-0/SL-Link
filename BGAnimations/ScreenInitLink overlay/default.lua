@@ -1,8 +1,7 @@
-link_ws = LoadActor("./network.lua")
-
 local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
+		LoadWS()
 	end
 }
 
@@ -15,6 +14,6 @@ t[#t+1] = LoadFont("Common Normal")..{
 	InitCommand=function(self)
 		self:shadowlength(1):y(40):zoom(0.8)
 	end
-}  
+}
 
-return t
+return t 
