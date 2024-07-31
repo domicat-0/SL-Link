@@ -60,14 +60,14 @@ local MessageHandler = function(message)
 		JoinHandler(data)
 	elseif data["type"] == "update" then
 		PlayerUpdateHandler(data)
-	elseif data["type"] == "start" then
+	elseif data["type"] == "draft_start" then
 		DraftStartHandler(data)
 	end
 end
 
 LoadWS = function()
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="ws://localhost:8001",
+		url="ws://192.168.4.35:8001",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
