@@ -1,3 +1,5 @@
+SL.LinkSongMasterList = GetLinkSongs()
+
 local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
