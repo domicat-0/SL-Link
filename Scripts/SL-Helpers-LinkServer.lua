@@ -56,7 +56,7 @@ end
 
 -- NOTE: Currently O(N^2) due to not creating hash table first
 local GetSongFromHash = function(hash)
-	for song in ivalues(SL.Global.LinkSongMasterList) do
+	for j, song in ivalues(SL.Global.LinkSongMasterList) do
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
 		local fn = steps:GetFilename()
 		local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
