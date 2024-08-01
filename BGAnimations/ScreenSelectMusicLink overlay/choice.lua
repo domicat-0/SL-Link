@@ -17,7 +17,9 @@ elseif song:HasBanner() then
 else
 	path = THEME:GetPathB("ScreenSelectMusicCasual", "overlay/img/no-jacket.png")
 end
-
+ 
+local fn = song:GetOneSteps(0, "Difficulty_Challenge"):GetFilename()
+local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
 
 local af = Def.ActorFrame{
 	InitCommand=function(self)
@@ -43,8 +45,20 @@ local af = Def.ActorFrame{
 			self:diffusealpha(1)
 		elseif self:getaux() == 1 then
 			self:diffuse(0.5, 0.25, 0.25, 0.6)
+			event = {
+				"type"="select",
+				"song"=steps_hash,
+				"weight"=-1
+			}
+			SL.Global.LinkWS:Send(JsonEncode(event))
 		elseif self:getaux() == 2 then
 			self:diffuse(0.25, 0.25, 0.5, 0.6)
+			event = {
+				"type"="select",
+				"song"=steps_hash,
+				"weight"=-1
+			}
+			SL.Global.LinkWS:Send(JsonEncode(event))
 		else
 			self:diffuse(0, 0, 0, 0.4)
 		end

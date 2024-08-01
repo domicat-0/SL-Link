@@ -84,16 +84,18 @@ local DraftStartHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
 	song_hashes = data["songs"]
 	SL.Global.LinkDraftSongList = {}
-	for i, hash in ipairs(song_hashes)
-	SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
-	if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+	for i, hash in ipairs(song_hashes) do
+		SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
+		if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		end
 	end
 end
 
+
 local GameStartHandler = function(data)
 	SL.Global.LinkSelectedSongs = data["songs"]
-	if SCREENMAN:GetTopScreen():GetName() == "ScreenSelectMusicLink" then
+	if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	end
 end
