@@ -1,7 +1,66 @@
+local GetFileContents = function(path)
+	local contents = ""
+
+	if FILEMAN:DoesFileExist(path) then
+		-- create a generic RageFile that we'll use to read the contents
+		local file = RageFileUtil.CreateRageFile()
+		-- the second argument here (the 1) signifies
+		-- that we are opening the file in read-only mode
+		if file:Open(path, 1) then
+			contents = file:Read()
+		end
+
+		-- destroy the generic RageFile now that we have the contents
+		file:destroy()
+	end
+
+	-- split the contents of the file on newline
+	-- to create a table of lines as strings
+	local lines = {}
+	for line in contents:gmatch("[^\r\n]+") do
+		lines[#lines+1] = line
+	end
+
+	return lines
+end
+
+
+
+GetLinkSongs = function()
+	local path = THEME:GetCurrentThemeDirectory() .. "Other/LinkMode-Groups.txt"
+	local preliminary_groups = GetFileContents(path)
+
+	-- if the file didn't exist or was empty or contained no valid groups,
+	-- return the full list of groups available to SM
+	if preliminary_groups == nil or #preliminary_groups == 0 then
+		return nil
+	end
+
+	local groups = {}
+	-- some Groups found in the file may not actually exist due to human error, typos, etc.
+	for prelim_group in ivalues(preliminary_groups) do
+		-- if this group exists
+		if SONGMAN:DoesSongGroupExist( prelim_group ) then
+			-- add this preliminary group to the table of finalized groups
+			groups[#groups+1] = prelim_group
+		end
+	end
+
+	if #groups > 0 then
+		local songs = SONGMAN:GetSongsInGroup(groups[1])
+		return songs
+	else
+		return nil
+	end
+end
+
+-- NOTE: Currently O(N^2) due to not creating hash table first
 local GetSongFromHash = function(hash)
-	for song in ivalues(SL.Global.LinkSongList) do
+	for song in ivalues(SL.Global.LinkSongMasterList) do
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
-		if steps.GetHash() == hash then
+		local fn = steps:GetFilename()
+		local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
+		if steps_hash == hash then
 			return song
 		end
 	end
@@ -23,34 +82,23 @@ end
 
 local DraftStartHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
-	SL.Global.LinkSongList = data["songs"]
-	if SCREENMAN:GetTopScreen():GetName() == ScreenWaitLink then
+	song_hashes = data["songs"]
+	SL.Global.LinkDraftSongList = {}
+	for i, hash in ipairs(song_hashes)
+	SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
+	if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	end
 end
 
-local PickHandler = function(data)
-	local hash = data["song"]
-	local song = GetSongFromHash(hash)
-end
-
-local NextHandler = function(data)
-	local player = data["player"]
-	if player == SL.Global.LinkPlayerTag then
-		SL.Global.LinkActive = true
-
+local GameStartHandler = function(data)
+	SL.Global.LinkSelectedSongs = data["songs"]
+	if SCREENMAN:GetTopScreen():GetName() == "ScreenSelectMusicLink" then
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	end
 end
 
-local BanHandler = function(data)
-	local hash = data["song"]
-	local song = GetSongFromHash(hash)
-end
-
-local GameStartHandler = function(data)
-end
-
-local ResultUpdateHandler = function(data)
+local RoundEndHandler = function(data)
 end
 
 local MessageHandler = function(message)
@@ -62,6 +110,10 @@ local MessageHandler = function(message)
 		PlayerUpdateHandler(data)
 	elseif data["type"] == "draft_start" then
 		DraftStartHandler(data)
+	elseif data["type"] == "game_start" then
+		GameStartHandler(data)
+	elseif data["type"] == "round_end" then
+		RoundEndHandler(data)
 	end
 end
 
@@ -85,8 +137,8 @@ LoadWS = function()
 						type="join"
 					}
 				}
-				SL.Global.LinkWS.Send(SL.Global.LinkWS,JsonEncode(event))
-				SL.Global.LinkWS.Send(SL.Global.LinkWS,JsonEncode(event))
+				SL.Global.LinkWS:Send(JsonEncode(event))
+				SL.Global.LinkWS:Send(JsonEncode(event))
 
 			elseif msgType == "Message" then
 				MessageHandler(message)

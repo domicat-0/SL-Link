@@ -1,21 +1,9 @@
--- song indices start at 2, since bg must be drawn first
-
 local current_index = 2
 local pick_stage = 1
 
--- load songs to be played
-
-local songlist = LoadActor("./setup.lua")
+local songlist = SL.Global.LinkDraftSongList
+local selected_songs = {}
 local revisit = false
-
-if SL.Global.FirstVisit then
-	SL.Global.SongList = songlist
-	SL.Global.SelectedSongs = {}
-else
-	songlist = SL.Global.SongList
-	pick_stage = 99
-	revisit = true
-end
 
 local prev_songs = {}
 
@@ -30,8 +18,8 @@ end
 
 SL.Global.LinkActive = false
 
-local pick_order = {1, 2, 2, 1, 1, 2, 2}
-local pick_type = {"Ban", "Ban", "Pick", "Pick", "Ban", "Ban", "Pick"}
+local pick_stage = 1
+local pick_type = {"Pick", "Ban"}
 
 local GetNextEnabledChoice = function(dir)
 	local start = dir > 0 and current_index+1 or #songlist+current_index-1
@@ -63,16 +51,15 @@ if not pick_stage then
 	local pick_stage = 1
 end
 
-local Select = function(song, type)
+local Select = function(type)
 	if type == "Pick" then
 		for i, child in ipairs( af:GetChild("") ) do
-			if child then
+			if i == current_index then
 				if child:getaux() ~= 0 then
 					return false
 				end
-				child:aux(pick_order[pick_stage])
+				child:aux(2)
 				child:playcommand("Enable")
-				SL.Global.SelectedSongs[#(SL.Global.SelectedSongs)+1] = songlist[current_index-1]
 			end
 		end	
 	else
@@ -81,7 +68,7 @@ local Select = function(song, type)
 				if child:getaux() ~= 0 then
 					return false
 				end
-				child:aux(3)
+				child:aux(1)
 				child:playcommand("Enable")
 			end
 		end	
@@ -89,10 +76,6 @@ local Select = function(song, type)
 
 local function input(event)
 	if not event or not event.PlayerNumber or not event.button then
-		return false
-	end
-
-	if SL.Global.LinkActive = false then
 		return false
 	end
 
@@ -115,7 +98,7 @@ local function input(event)
 
 		elseif event.GameButton == "Start" then
 			if pick_stage <= #pick_order then
-				
+				Select(pick_order[pick_stage])
 				pick_stage = pick_stage + 1
 				af:GetChild("Start"):play()
 			else
@@ -161,7 +144,8 @@ local t = Def.ActorFrame{
 			end
 		end
 
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		event = {"type"="ready"}
+		SL.Global.LinkWS:Send(JsonEncode(event))
 	end,
 }
 
