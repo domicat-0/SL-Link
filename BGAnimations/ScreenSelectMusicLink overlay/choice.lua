@@ -45,18 +45,24 @@ local af = Def.ActorFrame{
 			self:diffusealpha(1)
 		elseif self:getaux() == 1 then
 			self:diffuse(0.5, 0.25, 0.25, 0.6)
-			event = {
-				"type"="select",
-				"song"=steps_hash,
-				"weight"=-1
+			local event = {
+				type="WebSocketMessageType_Message",
+				data={
+					type="select",
+					song=steps_hash,
+					weight=-1,
+				}
 			}
 			SL.Global.LinkWS:Send(JsonEncode(event))
 		elseif self:getaux() == 2 then
 			self:diffuse(0.25, 0.25, 0.5, 0.6)
-			event = {
-				"type"="select",
-				"song"=steps_hash,
-				"weight"=-1
+			local event = {
+				type="WebSocketMessageType_Message",
+				data={
+					type="select",
+					song=steps_hash,
+					weight=-1,
+				}
 			}
 			SL.Global.LinkWS:Send(JsonEncode(event))
 		else

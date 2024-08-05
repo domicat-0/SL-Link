@@ -73,6 +73,17 @@ local Select = function(type)
 			end
 		end	
 	end
+	if pick_stage == #pick_type then
+		for i, child in ipairs(af:GetChild("")) do
+			if child:getaux() == 0 then
+				child:aux(3)
+				child:playcommand("Enable")
+			end
+			child:queuecommand("LoseFocus")
+		end
+	end
+	return true
+end
 
 local function input(event)
 	if not event or not event.PlayerNumber or not event.button then
@@ -84,6 +95,9 @@ local function input(event)
 		local topscreen = SCREENMAN:GetTopScreen()
 
 		if event.GameButton == "MenuRight" or event.GameButton == "MenuLeft" then
+			if pick_stage > #pick_type then
+				return
+			end
 			local prev_index = current_index
 			GetNextEnabledChoice(event.GameButton=="MenuRight" and 1 or -1)
 
@@ -94,28 +108,32 @@ local function input(event)
 					child:queuecommand("LoseFocus")
 				end
 			end
-			if prev_index ~= current_index then af:GetChild("Change"):play() end
+			if prev_index ~= current_index then 
+				af:GetChild("Change"):play() 
+			end
 
 		elseif event.GameButton == "Start" then
-			if pick_stage <= #pick_order then
-				Select(pick_order[pick_stage])
+			if pick_stage <= #pick_type then
+				local good = Select(pick_type[pick_stage])
+				if good == false then
+					return
+				end
 				pick_stage = pick_stage + 1
 				af:GetChild("Start"):play()
 			else
+				if pick_stage > #pick_type + 1 then
+					return
+				end
 				for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 					ApplyMods(player)
 				end
 				af:playcommand("Finish", {PlayerNumber=event.PlayerNumber})
+				pick_stage = pick_stage + 1
 			end
 		end
-		if pick_order[pick_stage] == 1 then
-			selector = "PlayerNumber_P1"
-		elseif pick_order[pick_stage] == 2 then
-			selector = "PlayerNumber_P2"
-		else
-			selector = nil
-		end
+	end
 	return false
+
 end
 
 local t = Def.ActorFrame{
@@ -131,20 +149,23 @@ local t = Def.ActorFrame{
 				child:queuecommand("GainFocus")
 			end
 		end
+
+		self:GetChild("TopText"):playcommand("Refresh")
 	end,
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 	end,
 	FinishCommand=function(self, params)
 		for i=2, #songlist+1 do
-			if i ~= current_index then
-				af:GetChild("")[i]:playcommand("NotChosen")
-			else
-				af:GetChild("")[i]:playcommand("Chosen")
-			end
+			af:GetChild("")[i]:playcommand("Chosen")
 		end
 
-		event = {"type"="ready"}
+		local event = {
+			type="WebSocketMessageType_Message",
+			data={
+				type="join"
+			}
+		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end,
 }
@@ -161,6 +182,25 @@ end
 if revisit then
 	t[#t+1] = LoadActor("./scoreboard.lua")
 end
+
+t[#t+1] = LoadFont("Common Normal")..{
+	Name="TopText",
+	Text="",
+	InitCommand=function(self)
+		self:shadowlength(1):y(-140):aux(0)
+	end,
+	RefreshCommand=function(self)
+		if self:getaux() == 0 then
+			self:settext("Waiting...")
+		elseif self:getaux() == 1 then
+			self:settext("Favor song")
+		elseif self:getaux() == 2 then
+			self:settext("Disfavor song")
+		else
+			self:settext("Invalid aux value")
+		end
+	end
+} 
 
 t[#t+1] = LoadActor( THEME:GetPathS("ScreenSelectMaster", "change") )..{ Name="Change", IsAction=true, SupportPan=false }
 t[#t+1] = LoadActor( THEME:GetPathS("common", "start") )..{ Name="Start", IsAction=true, SupportPan=false }

@@ -1,10 +1,13 @@
 local t = Def.ActorFrame{
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
+	end,
+	OnCommand=function(self)
+		SL.Global.LinkSongMasterList = GetLinkSongs()
 		LoadWS()
-		SL.LinkSongMasterList = GetLinkSongs()
 	end
 }
+
 
 t[#t+1] = Def.Quad {
 	InitCommand=function(self) self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) end
@@ -17,4 +20,4 @@ t[#t+1] = LoadFont("Common Normal")..{
 	end
 }
 
-return t 
+return t  

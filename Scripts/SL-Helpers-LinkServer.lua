@@ -56,7 +56,7 @@ end
 
 -- NOTE: Currently O(N^2) due to not creating hash table first
 local GetSongFromHash = function(hash)
-	for j, song in ivalues(SL.Global.LinkSongMasterList) do
+	for j, song in ipairs(SL.Global.LinkSongMasterList) do
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
 		local fn = steps:GetFilename()
 		local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
@@ -82,22 +82,19 @@ end
 
 local DraftStartHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
-	song_hashes = data["songs"]
+	local song_hashes = data["songs"]
 	SL.Global.LinkDraftSongList = {}
 	for i, hash in ipairs(song_hashes) do
 		SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
-		if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
-			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-		end
 	end
+	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+
+	
 end
 
 
 local GameStartHandler = function(data)
 	SL.Global.LinkSelectedSongs = data["songs"]
-	if SCREENMAN:GetTopScreen():GetName() == "ScreenWaitLink" then
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-	end
 end
 
 local RoundEndHandler = function(data)
@@ -133,7 +130,7 @@ LoadWS = function()
 			-- SCREENMAN:SystemMessage(message.type)
 			local msgType = ToEnumShortString(message.type)
 			if msgType == "Open" then
-				event = {
+				local event = {
 					type="WebSocketMessageType_Message",
 					data={
 						type="join"
@@ -141,13 +138,12 @@ LoadWS = function()
 				}
 				SL.Global.LinkWS:Send(JsonEncode(event))
 				SL.Global.LinkWS:Send(JsonEncode(event))
-
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
-
+				SCREENMAN:SystemMessage("0108")
 			end
-		end
+		end,
 	}
 end
 
