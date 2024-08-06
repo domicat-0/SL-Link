@@ -152,6 +152,11 @@ local t = Def.ActorFrame{
 
 		self:GetChild("TopText"):playcommand("Refresh")
 	end,
+	OnCommand=function(self)
+		local event = {
+			type="ready"
+		}
+		SL.Global.LinkWS:Send(JsonEncode(event))
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 	end,

@@ -141,6 +141,7 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
+				local topscreen = SCREENMAN:GetTopScreen()
 				topscreen:RemoveInputCallback(input)
 				SL.Global.LinkWS = nil
 				SL.Global.LinkPlayerTag = nil
