@@ -156,7 +156,7 @@ local t = Def.ActorFrame{
 		local event = {
 			type="WebSocketMessageType_Message",
 			data={
-				type="ready"
+				type="draft_ready"
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
@@ -172,7 +172,7 @@ local t = Def.ActorFrame{
 		local event = {
 			type="WebSocketMessageType_Message",
 			data={
-				type="join"
+				type="match_ready"
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
