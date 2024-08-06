@@ -157,6 +157,7 @@ local t = Def.ActorFrame{
 			type="ready"
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
+	end,
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 	end,
