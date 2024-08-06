@@ -61,7 +61,7 @@ local af = Def.ActorFrame{
 				data={
 					type="select",
 					song=steps_hash,
-					weight=-1,
+					weight=1,
 				}
 			}
 			SL.Global.LinkWS:Send(JsonEncode(event))
