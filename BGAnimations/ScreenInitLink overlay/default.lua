@@ -4,7 +4,6 @@ local t = Def.ActorFrame{
 	end,
 	OnCommand=function(self)
 		SL.Global.LinkSongMasterList = GetLinkSongs()
-		SCREENMAN:SystemMessage(SL.Global.LinkSongMasterList)
 		LoadWS()
 	end
 }
