@@ -154,7 +154,10 @@ local t = Def.ActorFrame{
 	end,
 	OnCommand=function(self)
 		local event = {
-			type="ready"
+			type="WebSocketMessageType_Message",
+			data={
+				type="ready"
+			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end,

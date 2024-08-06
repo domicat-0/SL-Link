@@ -113,6 +113,8 @@ local MessageHandler = function(message)
 		GameStartHandler(data)
 	elseif data["type"] == "round_end" then
 		RoundEndHandler(data)
+	elseif data["type"] == "error" then
+		ErrorHandler(data)
 	end
 end
 
