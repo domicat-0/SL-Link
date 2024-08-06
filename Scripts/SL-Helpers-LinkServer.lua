@@ -141,7 +141,13 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
-				SCREENMAN:SystemMessage("0108")
+				topscreen:RemoveInputCallback(input)
+				SL.Global.LinkWS = nil
+				SL.Global.LinkPlayerTag = nil
+				SL.Global.LinkPlayerList = nil
+				SL.Global.LinkMasterSongList = nil
+				Sl.Global.LinkDraftSongList = nil
+				topscreen:Cancel()
 			end
 		end,
 	}
