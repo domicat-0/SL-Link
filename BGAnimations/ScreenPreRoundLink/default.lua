@@ -1,8 +1,34 @@
 local active_song = SL.Global.LinkActiveSong
 local songlist = SL.Global.LinkSelectedSongs
 
+local function input(event)
+	if not event then
+		return false
+	end
+	if event.GameButton == "Start" then
+		local ev = {
+			type="WebSocketMessageType_Message",
+			data={
+				type="ready"
+			}
+		}
+		SL.Global.LinkWS:Send(JsonEncode(ev))
+end
+
+local t = Def.ActorFrame {
+	InitCommand=function(self)
+		self:xy(_screen.cx, _screen.cy)
+		self:queuecommand("Capture")
+	end,
+	CaptureCommand=function(self)
+		SCREENMAN:GetTopScreen():AddInputCallback(input)
+	end,
+}
+
 t[#t+1] = Def.Quad {
-	InitCommand=function(self) self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) end
+	InitCommand=function(self) 
+		self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) 
+	end
 }
 
 t[#t+1] = LoadActor("./tile.lua", {song, 0, 0})

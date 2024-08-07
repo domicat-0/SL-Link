@@ -95,6 +95,7 @@ end
 
 local GameStartHandler = function(data)
 	SL.Global.LinkSelectedSongs = data["songs"]
+	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
 local RoundEndHandler = function(data)
