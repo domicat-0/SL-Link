@@ -1,5 +1,5 @@
-local active_song = SL.Global.LinkActiveSong
 local songlist = SL.Global.LinkSelectedSongs
+local active_song = songlist[SL.Global.LinkRoundNumber]
 
 local function input(event)
 	if not event then

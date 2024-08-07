@@ -54,7 +54,7 @@ GetLinkSongs = function()
 	end
 end
 
--- NOTE: Currently O(N^2) due to not creating hash table first
+-- NOTE: Currently O(N) due to not creating hash table first
 local GetSongFromHash = function(hash)
 	for j, song in ipairs(SL.Global.LinkSongMasterList) do
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
@@ -88,17 +88,22 @@ local DraftStartHandler = function(data)
 		SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
 	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-
-	
 end
 
 
 local GameStartHandler = function(data)
-	SL.Global.LinkSelectedSongs = data["songs"]
+	local song_hashes = data["songs"]
+	SL.Global.LinkSelectedSongs = {}
+	for i, hash in ipairs(song_hashes) do
+		SL.Global.LinkSelectedSongs[i] = GetSongFromHash(hash)
+	end
+	SL.Global.LinkRoundNumber = 1
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
 local RoundEndHandler = function(data)
+	SL.Global.LinkPlayerScore = data[SL.Global.LinkPlayerTag]["score"]
+	SL.Global.LinkRoundNumber += 1
 end
 
 local MessageHandler = function(message)
@@ -112,8 +117,12 @@ local MessageHandler = function(message)
 		DraftStartHandler(data)
 	elseif data["type"] == "game_start" then
 		GameStartHandler(data)
+	elseif data["type"] == "round_start" then
+		RoundStartHandler(data)
 	elseif data["type"] == "round_end" then
 		RoundEndHandler(data)
+	elseif data["type"] == "game_end" then
+		GameEndHandler(data)
 	elseif data["type"] == "error" then
 		ErrorHandler(data)
 	end
