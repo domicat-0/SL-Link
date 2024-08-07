@@ -13,14 +13,14 @@ local function input(event)
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(ev))
+	end
 end
 
 local t = Def.ActorFrame {
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
-		self:queuecommand("Capture")
 	end,
-	CaptureCommand=function(self)
+	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 	end,
 }
@@ -28,13 +28,13 @@ local t = Def.ActorFrame {
 t[#t+1] = Def.Quad {
 	InitCommand=function(self) 
 		self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) 
-	end
+	end,
 }
 
-t[#t+1] = LoadActor("./tile.lua", {song, 0, 0})
+t[#t+1] = LoadActor("./tile.lua", {active_song, 0, 0})
 
 for i,song in ipairs(songlist) do
-	local song_actor = LoadActor("./choice.lua", {song, 100, (250-100*i)})
+	local song_actor = LoadActor("./tile.lua", {song, 100, (250-100*i)})
 	song_actor:zoom(0.7)
 	if song == active_song then
 		song_actor:diffuse(1, 1, 1, 1)
