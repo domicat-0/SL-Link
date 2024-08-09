@@ -101,9 +101,18 @@ local GameStartHandler = function(data)
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
+local RoundStartHandler = function(data)
+	local songlist = SL.Global.LinkSelectedSongs
+	local active_song = songlist[SL.Global.LinkRoundNumber]
+	GAMESTATE:SetCurrentSong(active_song)
+	local steps = active_song:GetOneSteps(0, "Difficulty_Challenge")
+	GAMESTATE:SetCurrentSteps(PLAYER_1, steps)
+	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+end
+
 local RoundEndHandler = function(data)
 	SL.Global.LinkPlayerScore = data[SL.Global.LinkPlayerTag]["score"]
-	SL.Global.LinkRoundNumber += 1
+	SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
 end
 
 local MessageHandler = function(message)
@@ -115,10 +124,10 @@ local MessageHandler = function(message)
 		PlayerUpdateHandler(data)
 	elseif data["type"] == "draft_start" then
 		DraftStartHandler(data)
-	elseif data["type"] == "game_start" then
-		GameStartHandler(data)
 	elseif data["type"] == "round_start" then
 		RoundStartHandler(data)
+	elseif data["type"] == "game_start" then
+		GameStartHandler(data)
 	elseif data["type"] == "round_end" then
 		RoundEndHandler(data)
 	elseif data["type"] == "game_end" then
@@ -154,16 +163,18 @@ LoadWS = function()
 				MessageHandler(message)
 			elseif msgType == "Close" then
 				local topscreen = SCREENMAN:GetTopScreen()
-				topscreen:RemoveInputCallback(input)
+				topscreen:RemoveInputCallback(SL.Global.LinkInputCallback)
 				SL.Global.LinkWS = nil
 				SL.Global.LinkPlayerTag = nil
 				SL.Global.LinkPlayerList = nil
 				SL.Global.LinkMasterSongList = nil
 				Sl.Global.LinkDraftSongList = nil
+				SL.Global.LinkConnected = nil
 				topscreen:Cancel()
 			end
 		end,
 	}
+	SL.Global.LinkConnected = true
 end
 
 

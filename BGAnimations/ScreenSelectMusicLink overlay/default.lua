@@ -85,7 +85,7 @@ local Select = function(type)
 	return true
 end
 
-local function input(event)
+ SL.Global.LinkInputCallback = function(event)
 	if not event or not event.PlayerNumber or not event.button then
 		return false
 	end
@@ -162,7 +162,7 @@ local t = Def.ActorFrame{
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end,
 	CaptureCommand=function(self)
-		SCREENMAN:GetTopScreen():AddInputCallback(input)
+		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
 	end,
 	FinishCommand=function(self, params)
 		for i=2, #songlist+1 do

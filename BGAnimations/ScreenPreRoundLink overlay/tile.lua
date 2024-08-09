@@ -2,6 +2,7 @@ local args = ...
 local song = args[1]
 local pos_x = args[2]
 local pos_y = args[3]
+local tiletype = args[4]
 local max_chars = 28
 
 local path = nil
@@ -25,13 +26,28 @@ local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
 local af = Def.ActorFrame{
 	InitCommand=function(self)
 		self:x(pos_x):y(pos_y)
-		self:diffuse(0.5, 0.5, 0.5, 0.7)
+		if tiletype == "main" then
+			self:zoom(2.5)
+		else
+			self:zoom(1.25)
+			self:diffuse(0.5, 0.5, 0.5, 0.7)
+		end
 	end
 }
 
 af[#af+1] = LoadActor(path)..{
 	InitCommand=function(self)
-		self:setsize(120, 120):zoom(1)
+		self:setsize(75, 75)
 	end
 }
+
+if tiletype == "main" then
+	af[#af+1] = LoadFont("Common Normal")..{
+		Text=song:GetDisplayMainTitle(),
+		InitCommand=function(self)
+			self:shadowlength(1):y(40):zoom(0.4)
+		end
+	}  
+end
+
 return af

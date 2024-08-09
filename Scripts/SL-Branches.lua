@@ -137,6 +137,16 @@ Branch.AfterSelectPlayMode = function()
 end
 
 Branch.AfterGameplay = function()
+	if SL.Global.GameMode == "Link" then
+		event = {
+			type="WebSocketMessageType_Message",
+			data={
+				type="song_result",
+				score=SL["P1"].Stages.Stats[SL.Global.LinkRoundNumber].score
+			}
+		}
+		SL.Global.LinkWS:Send(JsonEncode(event))
+	end
 	if THEME:GetMetric("ScreenHeartEntry", "HeartEntryEnabled") then
 		local go_to_heart= false
 		for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
@@ -211,6 +221,9 @@ Branch.AfterProfileSave = function()
 	
 	if SL.Global.GameMode == "Draft" then
 		return Branch.AfterResultsDraft()
+
+	elseif SL.Global.GameMode == "Link" then
+		return Branch.AfterResultsLink()
 
 	elseif PREFSMAN:GetPreference("EventMode") then
 		return SelectMusicOrCourse()
@@ -330,6 +343,14 @@ Branch.AfterResultsDraft = function()
 		return "ScreenEvaluationSummary"
 	else
 		return Branch.BeforeGameplayDraft()
+	end
+end
+
+Branch.AfterResultsLink = function()
+	if SL.Global.LinkRoundNumber > 3 then
+		return "ScreenLinkResults"
+	else
+		return "ScreenPreRoundLink"
 	end
 end
 
