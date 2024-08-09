@@ -104,6 +104,7 @@ end
 local RoundStartHandler = function(data)
 	local songlist = SL.Global.LinkSelectedSongs
 	local active_song = songlist[SL.Global.LinkRoundNumber]
+	GAMESTATE:SetCurrentPlayMode('PlayMode_Regular')
 	GAMESTATE:SetCurrentSong(active_song)
 	local steps = active_song:GetOneSteps(0, "Difficulty_Challenge")
 	GAMESTATE:SetCurrentSteps(PLAYER_1, steps)
