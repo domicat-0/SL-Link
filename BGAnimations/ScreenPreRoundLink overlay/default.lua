@@ -6,7 +6,6 @@ SL.Global.LinkInputCallback = function(event)
 	if not event or not event.PlayerNumber then
 		return false
 	end
-	SCREENMAN:SystemMessage(JsonEncode(event))
 	if event.GameButton == "Start" then
 		local ev = {
 			type="WebSocketMessageType_Message",
@@ -14,6 +13,7 @@ SL.Global.LinkInputCallback = function(event)
 				type="ready"
 			}
 		}
+		SL.Global.LinkWS:Send(JsonEncode(ev))
 		accepting_input = false
 	end
 end
