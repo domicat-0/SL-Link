@@ -146,6 +146,7 @@ Branch.AfterGameplay = function()
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
+		return "ScreenEvaluationWaitLink"
 	end
 	if THEME:GetMetric("ScreenHeartEntry", "HeartEntryEnabled") then
 		local go_to_heart= false
@@ -347,9 +348,10 @@ Branch.AfterResultsDraft = function()
 end
 
 Branch.AfterResultsLink = function()
-	if SL.Global.LinkRoundNumber > 3 then
+	if SL.Global.LinkGameOver then
 		return "ScreenLinkResults"
 	else
+		SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
 		return "ScreenPreRoundLink"
 	end
 end
