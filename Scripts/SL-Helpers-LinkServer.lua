@@ -124,6 +124,7 @@ local GameEndHandler = function(data)
 		SL.Global.LinkGameWinner = nil
 	else
 		SL.Global.LinkGameWinner = data["winner"]
+	end
 end
 
 local MessageHandler = function(message)
