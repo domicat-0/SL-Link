@@ -168,7 +168,9 @@ local t = Def.ActorFrame{
 		for i=2, #songlist+1 do
 			af:GetChild("")[i]:playcommand("Chosen")
 		end
-
+		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+			ApplyMods(player)
+		end
 		local event = {
 			type="WebSocketMessageType_Message",
 			data={
@@ -179,7 +181,7 @@ local t = Def.ActorFrame{
 	end,
 }
 
-LoadActor("./playerModifiers.lua")
+local a = LoadActor("./playerModifiers.lua")
 
 t[#t+1] = Def.Quad {
 	InitCommand=function(self) self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) end
