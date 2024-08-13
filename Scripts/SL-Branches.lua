@@ -120,8 +120,7 @@ Branch.AfterEvaluationStage = function()
 	if SL.Global.GameMode == "Casual" then
 		return Branch.AfterProfileSave()
 	else
-		return "ScreenProfileSave"
-	end
+q	end
 end
 
 Branch.AfterSelectPlayMode = function()
@@ -138,14 +137,6 @@ end
 
 Branch.AfterGameplay = function()
 	if SL.Global.GameMode == "Link" then
-		event = {
-			type="WebSocketMessageType_Message",
-			data={
-				type="song_result",
-				score=SL["P1"].Stages.Stats[SL.Global.LinkRoundNumber].score
-			}
-		}
-		SL.Global.LinkWS:Send(JsonEncode(event))
 		return "ScreenEvaluationWaitLink"
 	end
 	if THEME:GetMetric("ScreenHeartEntry", "HeartEntryEnabled") then
