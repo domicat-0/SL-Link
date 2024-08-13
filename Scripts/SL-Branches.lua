@@ -120,7 +120,7 @@ Branch.AfterEvaluationStage = function()
 	if SL.Global.GameMode == "Casual" then
 		return Branch.AfterProfileSave()
 	else
-q	end
+	end
 end
 
 Branch.AfterSelectPlayMode = function()
