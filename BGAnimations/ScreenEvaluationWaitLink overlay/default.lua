@@ -3,12 +3,11 @@ local t = Def.ActorFrame{
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
-		SCREENMAN:SystemMessage(#SL["P1"].Stages.Stats)
 		event = {
 			type="WebSocketMessageType_Message",
 			data={
 				type="song_result",
-				score=SL["P1"].Stages.Stats[SL.Global.LinkRoundNumber].score
+				score=SL["P1"].Stages.Stats[#SL["P1"].Stages.Stats].score
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
