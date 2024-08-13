@@ -125,6 +125,9 @@ end
 					return
 				end
 				for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+					local pn = ToEnumShortString(player)
+					GAMESTATE:GetPlayerState(player):SetPlayerOptions("ModsLevel_Preferred", SL[pn].PlayerOptionsString)
+					GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):FailSetting( GetDefaultFailType() )
 					ApplyMods(player)
 				end
 				af:playcommand("Finish", {PlayerNumber=event.PlayerNumber})
@@ -170,6 +173,7 @@ local t = Def.ActorFrame{
 		end
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			ApplyMods(player)
+			GAMESTATE:GetPlayerState(player):SetPlayerOptions("ModsLevel_Preferred", SL[pn].PlayerOptionsString)
 		end
 		local event = {
 			type="WebSocketMessageType_Message",
