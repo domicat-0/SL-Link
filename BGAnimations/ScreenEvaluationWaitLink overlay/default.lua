@@ -3,6 +3,7 @@ local t = Def.ActorFrame{
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
+		SCREENMAN:SystemMessage(#SL["P1"].Stages.Stats)
 		event = {
 			type="WebSocketMessageType_Message",
 			data={
