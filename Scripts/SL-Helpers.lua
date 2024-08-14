@@ -829,6 +829,47 @@ CalculateExScore = function(player, ex_counts, use_actual_w0_weight)
 end
 
 -- -----------------------------------------------------------------------
+-- Calculates the Link mode score for a given player.
+CalculateLinkScore = function(player, ex_counts, use_actual_w0_weight)
+	 local StepsOrTrail = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player)) or GAMESTATE:GetCurrentSteps(player)
+
+	local totalSteps = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_TapsAndHolds" )
+	local totalHolds = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_Holds" )
+	local totalRolls = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_Rolls" )
+
+	local LinkWeights = {
+		W010 = 10,
+		W110 = 9,
+		W2 = 6,
+		W3 = 3,
+		W4 = 0,
+		W5 = 0,
+		Miss = 0,
+		Held = 10,
+		LetGo = 0,
+		HitMine = -6,
+	}
+
+	local total_possible = totalSteps * 10 + (totalHolds + totalRolls) * 10
+
+	local total_points = 0
+
+	local keys = { "W0", "W1", "W2", "W3", "W4", "W5", "Miss", "Held", "LetGo", "HitMine" }
+	local counts = ex_counts or SL[ToEnumShortString(player)].Stages.Stats[SL.Global.Stages.PlayedThisGame + 1].ex_counts
+	-- Just for validation, but shouldn't happen in normal gameplay.
+	if counts == nil then return 0 end
+
+	for key in ivalues(keys) do
+		local value = counts[key]
+		if value ~= nil then
+			total_points = total_points + value * LinkWeights[key]
+		end
+	end
+
+	return math.max(0, math.floor(total_points/total_possible * 10000) / 100), total_points, total_possible
+end
+
+-- -----------------------------------------------------------------------
 -- Generates the column mapping in case of any turn mods.
 -- Returns a table containing the column swaps.
 -- Returns nil if we can't compute it

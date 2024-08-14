@@ -3,14 +3,16 @@ local t = Def.ActorFrame{
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
+		percent = CalculateLinkScore(PLAYER_1, GetExJudgementCounts(PLAYER_1))
 		event = {
 			type="WebSocketMessageType_Message",
 			data={
 				type="song_result",
-				score=SL["P1"].Stages.Stats[#SL["P1"].Stages.Stats].score
+				score=percent
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
+		SCREENMAN:SystemMessage(JsonEncode(SL["P1"].Stages.Stats[1]))
 	end
 }
 

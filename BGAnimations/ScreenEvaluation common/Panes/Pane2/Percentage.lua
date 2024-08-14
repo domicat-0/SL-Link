@@ -2,8 +2,10 @@ local player, controller = unpack(...)
 
 local percent = nil
 local diffuse = nil
-
-if SL[ToEnumShortString(player)].ActiveModifiers.ShowEXScore then
+if SL.Global.GameMode == "Link" or SL.Global.GameMode == "Draft" then
+	percent = CalculateLinkScore(player, GetExJudgementCounts(player))
+	diffuse = SL.JudgmentColors[SL.Global.GameMode][1]
+elseif SL[ToEnumShortString(player)].ActiveModifiers.ShowEXScore then
 	percent = CalculateExScore(player, GetExJudgmentCounts(player))
 	diffuse = SL.JudgmentColors[SL.Global.GameMode][1]
 else
