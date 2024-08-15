@@ -351,7 +351,7 @@ SL = {
 			AllowW1="AllowW1_Everywhere",
 			SubSortByNumSteps=true,
 
-			TimingWindowSecondsW1=0.008500,
+			TimingWindowSecondsW1=0.013500,
 			TimingWindowSecondsW2=0.021500,
 			TimingWindowSecondsW3=0.043000,
 			TimingWindowSecondsW4=0.102000,
