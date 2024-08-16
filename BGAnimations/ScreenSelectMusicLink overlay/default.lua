@@ -37,13 +37,6 @@ local EnableChoices = function()
 	for i, child in ipairs(af:GetChild("")) do
 		child:aux(0)
 	end
-	if revisit then
-		for i, child in ipairs(af:GetChild("")) do
-			if songlist[i-1] ~= SL.Global.SelectedSongs[#SL.Global.Stages.Stats+1] then
-				child:aux(3)
-			end
-		end
-	end
 end
 
 -- input callbacks
@@ -188,12 +181,7 @@ t[#t+1] = Def.Quad {
 }
 
 for i,song in ipairs(songlist) do
-
 	t[#t+1] = LoadActor("./choice.lua", {song, i})
-end
-
-if revisit then
-	t[#t+1] = LoadActor("./scoreboard.lua")
 end
 
 t[#t+1] = LoadFont("Common Normal")..{

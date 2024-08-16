@@ -97,8 +97,11 @@ local GameStartHandler = function(data)
 	for i, hash in ipairs(song_hashes) do
 		SL.Global.LinkSelectedSongs[i] = GetSongFromHash(hash)
 	end
-	SL.Global.LinkRoundNumber = 1
-	SL.Global.LinkRoundResults = {}
+	SL.Global.LinkRoundNumber = 0
+	SL.Global.LinkPlayerScores = {}
+	for tag in ivalues(SL.Global.LinkPlayerList) do
+		SL.Global.LinkPlayerScores[tag] = 0
+	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
@@ -113,18 +116,15 @@ local RoundStartHandler = function(data)
 end
 
 local RoundEndHandler = function(data)
-	SL.Global.LinkPlayerScore = data[SL.Global.LinkPlayerTag]["score"]
-	SL.Global.LinkRoundResults[SL.Global.LinkRoundNumber] = JsonDecode
+	for tag in ivalues(SL.Global.LinkPlayerList) do
+		SL.Global.LinkPlayerScores[tag] = data[tag]["score"]
+	end
+	SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
-	if data["winner"] == "X" then
-		SL.Global.LinkGameWinner = nil
-	else
-		SL.Global.LinkGameWinner = data["winner"]
-	end
 end
 
 local MessageHandler = function(message)

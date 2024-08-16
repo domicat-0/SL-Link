@@ -120,6 +120,7 @@ Branch.AfterEvaluationStage = function()
 	if SL.Global.GameMode == "Casual" then
 		return Branch.AfterProfileSave()
 	else
+		return "ScreenProfileSave"
 	end
 end
 
@@ -215,7 +216,7 @@ Branch.AfterProfileSave = function()
 		return Branch.AfterResultsDraft()
 
 	elseif SL.Global.GameMode == "Link" then
-		return Branch.AfterResultsLink()
+		return "ScreenResultsLink"
 
 	elseif PREFSMAN:GetPreference("EventMode") then
 		return SelectMusicOrCourse()
@@ -335,15 +336,6 @@ Branch.AfterResultsDraft = function()
 		return "ScreenEvaluationSummary"
 	else
 		return Branch.BeforeGameplayDraft()
-	end
-end
-
-Branch.AfterResultsLink = function()
-	if SL.Global.LinkGameOver then
-		return "ScreenLinkResults"
-	else
-		SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
-		return "ScreenPreRoundLink"
 	end
 end
 

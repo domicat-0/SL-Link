@@ -34,7 +34,6 @@ local t = Def.ActorFrame{
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
-		SCREENMAN:SystemMessage(JsonEncode(SL["P1"].Stages.Stats[1].ex_counts))
 		event = {
 			type="WebSocketMessageType_Message",
 			data={
@@ -43,7 +42,6 @@ local t = Def.ActorFrame{
 			}
 		}
 		SL.Global.LinkWS:Send(JsonEncode(event))
-		SCREENMAN:SystemMessage(JsonEncode(SL["P1"].Stages.Stats[1]))
 	end
 }
 
