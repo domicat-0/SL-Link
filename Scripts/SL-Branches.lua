@@ -343,7 +343,7 @@ Branch.AfterResultsLink = function()
 	if SL.Global.LinkGameOver == true then
 		return Branch.TitleMenu()
 	else
-		return "ScreenSelectMusicLink"
+		return "ScreenPreRoundLink"
 	end
 end
 
