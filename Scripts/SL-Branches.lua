@@ -339,6 +339,14 @@ Branch.AfterResultsDraft = function()
 	end
 end
 
+Branch.AfterResultsLink = function()
+	if SL.Global.LinkGameOver == true then
+		return Branch.TitleMenu()
+	else
+		return "ScreenSelectMusicLink"
+	end
+end
+
 Branch.BeforeGameplayDraft = function()
 	return "ScreenSelectMusicDraft"
 end
