@@ -97,7 +97,7 @@ local GameStartHandler = function(data)
 	for i, hash in ipairs(song_hashes) do
 		SL.Global.LinkSelectedSongs[i] = GetSongFromHash(hash)
 	end
-	SL.Global.LinkRoundNumber = 0
+	SL.Global.LinkRoundNumber = 1
 	SL.Global.LinkPlayerScores = {}
 	for tag in ivalues(SL.Global.LinkPlayerList) do
 		SL.Global.LinkPlayerScores[tag] = 0
