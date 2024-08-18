@@ -66,7 +66,6 @@ local af = Def.ActorFrame{
 			}
 			LinkSendMessage(event, 10)
 		else
-			SCREENMAN:SystemMessage("bab")
 			self:diffuse(0, 0, 0, 0.4)
 		end
 	end,

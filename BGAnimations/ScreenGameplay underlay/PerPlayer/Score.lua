@@ -6,6 +6,13 @@ local IsUltraWide = (GetScreenAspectRatio() > 21/9)
 local NumPlayers = #GAMESTATE:GetHumanPlayers()
 local IsEX = SL[pn].ActiveModifiers.ShowEXScore
 
+local IsLink = nil
+if SL.Global.GameMode == "Link" then
+	IsLink = true
+else
+	IsLink = false
+end
+
 -- -----------------------------------------------------------------------
 -- first, check for conditions where we might not draw the score actor at all
 
@@ -58,7 +65,9 @@ return LoadFont(ThemePrefs.Get("ThemeFont") .. " numbers")..{
 	InitCommand=function(self)
 		self:valign(1):horizalign(right)
 		self:zoom(0.5)
-		if IsEX then
+		if IsLink then
+			self:diffuse(color("#9f9fff"))
+		elseif IsEX then
 			-- If EX Score, let's diffuse it to be the same as the FA+ top window.
 			-- This will make it consistent with the EX Score Pane.
 			self:diffuse(SL.JudgmentColors["FA+"][1])
@@ -132,7 +141,7 @@ return LoadFont(ThemePrefs.Get("ThemeFont") .. " numbers")..{
 		self:queuecommand("RedrawScore")
 	end,
 	RedrawScoreCommand=function(self)
-		if not IsEX then
+		if not IsEX or IsLink then
 			local dance_points = pss:GetPercentDancePoints()
 			local percent = FormatPercentScore( dance_points ):sub(1,-2)
 			self:settext(percent)
@@ -141,7 +150,7 @@ return LoadFont(ThemePrefs.Get("ThemeFont") .. " numbers")..{
 	ExCountsChangedMessageCommand=function(self, params)
 		if params.Player ~= player then return end
 
-		if IsEX then
+		if IsEX or IsLink then
 			self:settext(("%.02f"):format(params.ExScore))
 		end
 	end,

@@ -260,11 +260,18 @@ SL = {
 			color("#ff3030")	-- red (slightly lightened)
 		},
 		Link = {
-			color("#9f9fff"),	-- purple/pink
-			color("#21cce8"),	-- blue
+			-- color("#9f9fff"),	-- purple/pink
+			-- color("#21cce8"),	-- blue
+			-- color("#e29c18"),	-- gold
+			-- color("#66c955"),	-- green
+			-- color("#7f7f7f"),	-- gary
+			-- color("#ff3030")	-- red (slightly lightened)
+
+			color("#21CCE8"),	-- blue
+			color("#ffffff"),	-- white
 			color("#e29c18"),	-- gold
 			color("#66c955"),	-- green
-			color("#7f7f7f"),	-- gary
+			color("#b45cff"),	-- purple (greatly lightened)
 			color("#ff3030")	-- red (slightly lightened)
 		},
 		["FA+"] = {
@@ -507,25 +514,25 @@ SL = {
 			InitialValue=0,
 		},
 		Link = {
-			PercentScoreWeightW1=10,
-			PercentScoreWeightW2=9,
-			PercentScoreWeightW3=6,
-			PercentScoreWeightW4=2,
-			PercentScoreWeightW5=0,
-			PercentScoreWeightMiss=0,
+			PercentScoreWeightW1=5,
+			PercentScoreWeightW2=4,
+			PercentScoreWeightW3=2,
+			PercentScoreWeightW4=0,
+			PercentScoreWeightW5=-6,
+			PercentScoreWeightMiss=-12,
 			PercentScoreWeightLetGo=0,
-			PercentScoreWeightHeld=IsGame("pump") and 0 or 10,
+			PercentScoreWeightHeld=IsGame("pump") and 0 or 5,
 			PercentScoreWeightHitMine=-6,
 			PercentScoreWeightCheckpointHit=0,
 
-			GradeWeightW1=10,
-			GradeWeightW2=9,
-			GradeWeightW3=6,
-			GradeWeightW4=2,
-			GradeWeightW5=0,
-			GradeWeightMiss=0,
+			GradeWeightW1=5,
+			GradeWeightW2=4,
+			GradeWeightW3=2,
+			GradeWeightW4=0,
+			GradeWeightW5=-6,
+			GradeWeightMiss=-12,
 			GradeWeightLetGo=0,
-			GradeWeightHeld=IsGame("pump") and 0 or 10,
+			GradeWeightHeld=IsGame("pump") and 0 or 5,
 			GradeWeightHitMine=-6,
 			GradeWeightCheckpointHit=0,
 

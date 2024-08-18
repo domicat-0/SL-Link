@@ -1,11 +1,10 @@
 local ScoreCalc = function()
 	local exc = SL["P1"].Stages.Stats[#SL["P1"].Stages.Stats].ex_counts
 	local link_weights = {
-		W010 = 10,
-		W110 = 9,
-		W2 = 6,
-		W3 = 3,
-		W4 = 0,
+		W1 = 10,
+		W2 = 9,
+		W3 = 6,
+		W4 = 3,
 		W5 = 0,
 		Miss = 0,
 		Held = 10,
