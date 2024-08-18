@@ -50,10 +50,11 @@ SelectMusicOrCourse = function()
 	else
 		if SL.Global.GameMode == "Casual" then
 			return "ScreenSelectMusicCasual"
-		end
-		if SL.Global.GameMode == "Draft" then
+		elseif SL.Global.GameMode == "Draft" then
 			SL.Global.FirstVisit = true
 			return "ScreenSelectMusicDraft"
+		elseif SL.Global.GameMode == "Link" then
+			return "ScreenInitLink"
 		end
 
 		return "ScreenSelectMusic"

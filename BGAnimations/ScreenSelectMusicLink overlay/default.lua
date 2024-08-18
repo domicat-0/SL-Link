@@ -51,18 +51,20 @@ local Select = function(type)
 				if child:getaux() ~= 0 then
 					return false
 				end
+				child:finishtweening()
 				child:aux(2)
-				child:playcommand("Enable")
+				child:queuecommand("Enable")
 			end
 		end	
-	else
+	elseif type == "Ban" then
 		for i, child in ipairs( af:GetChild("") ) do
 			if i == current_index then
 				if child:getaux() ~= 0 then
 					return false
 				end
+				child:finishtweening()
 				child:aux(1)
-				child:playcommand("Enable")
+				child:queuecommand("Enable")
 			end
 		end	
 	end
@@ -120,7 +122,7 @@ end
 				for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 					ApplyMods(player)
 				end
-				af:playcommand("Finish", {PlayerNumber=event.PlayerNumber})
+				af:queuecommand("Finish", {PlayerNumber=event.PlayerNumber})
 				pick_stage = pick_stage + 1
 			end
 		end
@@ -152,7 +154,7 @@ local t = Def.ActorFrame{
 				type="draft_ready"
 			}
 		}
-		SL.Global.LinkWS:Send(JsonEncode(event))
+		LinkSendMessage(event, 10)
 	end,
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
@@ -170,7 +172,7 @@ local t = Def.ActorFrame{
 				type="match_ready"
 			}
 		}
-		SL.Global.LinkWS:Send(JsonEncode(event))
+		LinkSendMessage(event, 10)
 	end,
 }
 

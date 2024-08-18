@@ -53,7 +53,7 @@ local af = Def.ActorFrame{
 					weight=-1,
 				}
 			}
-			SL.Global.LinkWS:Send(JsonEncode(event))
+			LinkSendMessage(event, 10)
 		elseif self:getaux() == 2 then
 			self:diffuse(0.25, 0.25, 0.5, 0.6)
 			local event = {
@@ -64,8 +64,9 @@ local af = Def.ActorFrame{
 					weight=1,
 				}
 			}
-			SL.Global.LinkWS:Send(JsonEncode(event))
+			LinkSendMessage(event, 10)
 		else
+			SCREENMAN:SystemMessage("bab")
 			self:diffuse(0, 0, 0, 0.4)
 		end
 	end,

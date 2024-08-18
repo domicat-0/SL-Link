@@ -180,7 +180,7 @@ LoadWS = function()
 				SL.Global.LinkPlayerTag = nil
 				SL.Global.LinkPlayerList = nil
 				SL.Global.LinkMasterSongList = nil
-				Sl.Global.LinkDraftSongList = nil
+				SL.Global.LinkDraftSongList = nil
 				SL.Global.LinkConnected = nil
 				topscreen:Cancel()
 			end
@@ -189,5 +189,19 @@ LoadWS = function()
 	SL.Global.LinkConnected = true
 end
 
+LinkSendMessage = function(event, retries)
+	SCREENMAN:SystemMessage(retries)
+	if retries == 0 then
+		return false
+	end
 
+	local msg_sent = SL.Global.LinkWS:Send(JsonEncode(event))
+
+	if not msg_sent then
+		local good = LinkSendMessage(event, retries - 1)
+		return good
+	else
+		return true
+	end
+end
 
