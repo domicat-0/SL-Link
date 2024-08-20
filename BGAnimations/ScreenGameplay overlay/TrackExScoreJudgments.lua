@@ -117,12 +117,8 @@ return Def.Actor{
 		end
 		if count_updated then
 			-- Broadcast so other elements on ScreenGameplay can process the updated count.
-			if SL.Global.GameMode == "Link" then
-				local ExScore, actual_points, actual_possible=CalculateExScore(player,storage.ex_counts)
-			else
-				local ExScore, actual_points, actual_possible=CalculateLinkScore(player,storage.ex_counts)
-			end
-
+			local ExScore, actual_points, actual_possible
+			ExScore, actual_points, actual_possible=CalculateExScore(player,storage.ex_counts)
 
 			MESSAGEMAN:Broadcast(
 				"ExCountsChanged",

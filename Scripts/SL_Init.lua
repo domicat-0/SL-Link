@@ -268,10 +268,10 @@ SL = {
 			-- color("#ff3030")	-- red (slightly lightened)
 
 			color("#21CCE8"),	-- blue
-			color("#ffffff"),	-- white
 			color("#e29c18"),	-- gold
 			color("#66c955"),	-- green
 			color("#b45cff"),	-- purple (greatly lightened)
+			color("#c9855e"),	-- peach?
 			color("#ff3030")	-- red (slightly lightened)
 		},
 		["FA+"] = {
@@ -330,7 +330,7 @@ SL = {
 			RegenComboAfterMiss=5,
 			MaxRegenComboAfterMiss=10,
 			MinTNSToHideNotes="TapNoteScore_W3",
-			MinTNSToScoreNotes=ThemePrefs.Get("RescoreEarlyHits") and "TapNoteScore_W3" or "TapNoteScore_None",
+			MinTNSToScoreNotes="TapNoteScore_W3",
 			HarshHotLifePenalty=true,
 
 			PercentageScoring=true,
@@ -358,11 +358,11 @@ SL = {
 			AllowW1="AllowW1_Everywhere",
 			SubSortByNumSteps=true,
 
-			TimingWindowSecondsW1=0.013500,
-			TimingWindowSecondsW2=0.021500,
-			TimingWindowSecondsW3=0.043000,
-			TimingWindowSecondsW4=0.102000,
-			TimingWindowSecondsW5=0.135000,
+			TimingWindowSecondsW1=0.021500,
+			TimingWindowSecondsW2=0.043000,
+			TimingWindowSecondsW3=0.102000,
+			TimingWindowSecondsW4=0.135000,
+			TimingWindowSecondsW5=0.180000,
 			TimingWindowSecondsHold=0.320000,
 			TimingWindowSecondsMine=0.070000,
 			TimingWindowSecondsRoll=0.350000,

@@ -141,7 +141,7 @@ return LoadFont(ThemePrefs.Get("ThemeFont") .. " numbers")..{
 		self:queuecommand("RedrawScore")
 	end,
 	RedrawScoreCommand=function(self)
-		if not IsEX or IsLink then
+		if not (IsEX or IsLink) then
 			local dance_points = pss:GetPercentDancePoints()
 			local percent = FormatPercentScore( dance_points ):sub(1,-2)
 			self:settext(percent)

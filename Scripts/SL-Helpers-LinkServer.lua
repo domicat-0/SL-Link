@@ -174,15 +174,12 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
+				local event = {
+					type="WebSocketMessageType_Close",
+				}
+				SL.Global.LinkWS:Send(JsonEncode(event))
 				local topscreen = SCREENMAN:GetTopScreen()
-				topscreen:RemoveInputCallback(SL.Global.LinkInputCallback)
-				SL.Global.LinkWS = nil
-				SL.Global.LinkPlayerTag = nil
-				SL.Global.LinkPlayerList = nil
-				SL.Global.LinkMasterSongList = nil
-				SL.Global.LinkDraftSongList = nil
-				SL.Global.LinkConnected = nil
-				topscreen:Cancel()
+				SL.Global.GameOver = true
 			end
 		end,
 	}

@@ -645,6 +645,16 @@ IsW0Judgment = function(params, player)
 		if offset <= W0 then
 			return true
 		end
+	elseif params.TapNoteScore == "TapNoteScore_W1" and (SL.Global.GameMode == "Draft" or SL.Global.GameMode == "Link") then
+		local prefs = SL.Preferences["FA+"]
+		local scale = PREFSMAN:GetPreference("TimingWindowScale")
+		local pn = ToEnumShortString(player)
+		local W0 = prefs["TimingWindowSecondsW1"] * scale + prefs["TimingWindowAdd"]
+		
+		local offset = math.abs(params.TapNoteOffset)
+		if offset <= W0 then
+			return true
+		end
 	end
 	return false
 end
@@ -838,8 +848,8 @@ CalculateLinkScore = function(player, ex_counts, use_actual_w0_weight)
 	local totalRolls = StepsOrTrail:GetRadarValues(player):GetValue( "RadarCategory_Rolls" )
 
 	local LinkWeights = {
-		W010 = 10,
-		W110 = 9,
+		W0 = 10,
+		W1 = 9,
 		W2 = 6,
 		W3 = 3,
 		W4 = 0,
