@@ -158,7 +158,7 @@ LoadWS = function()
 		},
 		handshakeTimeout=5,
 		pingInterval=60,
-		automaticReconnect=true,
+		automaticReconnect=false,
 		onMessage=function(message)
 			-- SCREENMAN:SystemMessage(message.type)
 			local msgType = ToEnumShortString(message.type)
@@ -187,7 +187,6 @@ LoadWS = function()
 end
 
 LinkSendMessage = function(event, retries)
-	SCREENMAN:SystemMessage(retries)
 	if retries == 0 then
 		return false
 	end

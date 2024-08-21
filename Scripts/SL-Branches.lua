@@ -61,6 +61,15 @@ SelectMusicOrCourse = function()
 	end
 end
 
+SelectMusicOrCourseB = function()
+	if SL.Global.GameMode ~= "Link" then
+		return SelectMusicOrCourse()
+	else
+		SL.Global.LinkGameOver = true
+		return Branch.AfterResultsLink()
+	end
+end
+
 Branch.AllowDraft = function()
 	local style = GAMESTATE:GetCurrentStyle():GetName():gsub("8", "")
 	if style  == "versus" then
@@ -342,6 +351,14 @@ end
 
 Branch.AfterResultsLink = function()
 	if SL.Global.LinkGameOver == true then
+		if SL.Global.LinkWS then
+			SL.Global.LinkWS:Close()
+		end
+		SL.Global.LinkPlayerTag = nil
+		SL.Global.LinkPlayerList = nil
+		SL.Global.LinkMasterSongList = nil
+		SL.Global.LinkDraftSongList = nil
+		SL.Global.LinkConnected = nil
 		return Branch.TitleMenu()
 	else
 		return "ScreenPreRoundLink"

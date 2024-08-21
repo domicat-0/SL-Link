@@ -10,6 +10,7 @@ local RestartHandler = function(event)
 	if not event then return end
 
 	if event.type == "InputEventType_FirstPress" then
+
 		if event.DeviceInput.button == "DeviceButton_left ctrl" then
 			holdingCtrl = true
 		elseif event.DeviceInput.button == "DeviceButton_r" then
