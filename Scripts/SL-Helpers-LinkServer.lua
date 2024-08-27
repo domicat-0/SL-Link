@@ -151,7 +151,7 @@ end
 
 LoadWS = function()
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="wss://websockets-echo.fly.dev",
+		url="wss://link-server.fly.dev",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
