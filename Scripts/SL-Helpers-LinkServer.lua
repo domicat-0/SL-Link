@@ -129,7 +129,6 @@ end
 
 local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
-	SCREENMAN:SystemMessage(data["type"])
 	if data["type"] == "join" then
 		JoinHandler(data)
 	elseif data["type"] == "update" then
@@ -160,7 +159,6 @@ LoadWS = function()
 		pingInterval=60,
 		automaticReconnect=false,
 		onMessage=function(message)
-			-- SCREENMAN:SystemMessage(message.type)
 			local msgType = ToEnumShortString(message.type)
 			if msgType == "Open" then
 				local event = {

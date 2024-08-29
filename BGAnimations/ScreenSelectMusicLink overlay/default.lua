@@ -77,6 +77,7 @@ local Select = function(type)
 			child:queuecommand("LoseFocus")
 		end
 	end
+	self:GetChild("TopText"):playcommand("Refresh")
 	return true
 end
 

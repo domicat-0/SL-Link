@@ -80,16 +80,9 @@ local af = Def.ActorFrame{
 	end
 }
 
-af[#af+1] = LoadFont("Common Normal")..{
-	Text=song:GetDisplayMainTitle(),
-	InitCommand=function(self)
-		self:shadowlength(1):y(40):zoom(0.8)
-	end
-}  
-
 af[#af+1] = LoadActor(path)..{
 	InitCommand=function(self)
-		self:y(-40):setsize(120, 120):zoom(1)
+		self:y(-40):setsize(140, 140):zoom(1)
 	end
 }
 

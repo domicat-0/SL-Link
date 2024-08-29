@@ -41,13 +41,4 @@ af[#af+1] = LoadActor(path)..{
 	end
 }
 
-if tiletype == "main" then
-	af[#af+1] = LoadFont("Common Normal")..{
-		Text=song:GetDisplayMainTitle(),
-		InitCommand=function(self)
-			self:shadowlength(1):y(40):zoom(0.4)
-		end
-	}  
-end
-
 return af
