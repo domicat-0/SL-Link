@@ -5,7 +5,6 @@ local t = Def.ActorFrame{
 	OnCommand=function(self)
 		local rh = GetExJudgmentCounts(PLAYER_1)
 		percent = CalculateExScore(PLAYER_1, rh)
-		SCREENMAN:SystemMessage(percent)
 		event = {
 			type="WebSocketMessageType_Message",
 			data={

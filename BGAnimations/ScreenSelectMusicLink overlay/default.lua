@@ -198,7 +198,6 @@ t[#t+1] = LoadFont("Common Normal")..{
 		self:shadowlength(1):y(-170):aux(0)
 	end,
 	RefreshCommand=function(self)
-		SCREENMAN:SystemMessage("penice")
 		if self:getaux() == 0 then
 			self:settext("Waiting...")
 		elseif self:getaux() == 1 then

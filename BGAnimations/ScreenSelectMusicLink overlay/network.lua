@@ -15,7 +15,9 @@ local GetSongFromHash = function(hash)
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
 		if steps.GetHash() == hash then
 			return song
+		end
 	return nil
+end
 
 local ErrorHandler = function(data)
 	SCREENMAN:SystemMessage(data["message"])
