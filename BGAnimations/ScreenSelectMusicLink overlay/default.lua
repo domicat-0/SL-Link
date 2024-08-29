@@ -54,6 +54,7 @@ local Select = function(type)
 				child:finishtweening()
 				child:aux(2)
 				child:queuecommand("Enable")
+				af:GetChild("TopText"):aux(2)
 			end
 		end	
 	elseif type == "Ban" then
@@ -65,6 +66,7 @@ local Select = function(type)
 				child:finishtweening()
 				child:aux(1)
 				child:queuecommand("Enable")
+				af:GetChild("TopText"):aux(3)
 			end
 		end	
 	end
@@ -77,7 +79,7 @@ local Select = function(type)
 			child:queuecommand("LoseFocus")
 		end
 	end
-	self:GetChild("TopText"):playcommand("Refresh")
+	af:GetChild("TopText"):playcommand("Refresh")
 	return true
 end
 
@@ -145,8 +147,8 @@ local t = Def.ActorFrame{
 				child:queuecommand("GainFocus")
 			end
 		end
-
-		self:GetChild("TopText"):playcommand("Refresh")
+		af:GetChild("TopText"):aux(1)
+		af:GetChild("TopText"):playcommand("Refresh")
 	end,
 	OnCommand=function(self)
 		local event = {
@@ -174,6 +176,8 @@ local t = Def.ActorFrame{
 			}
 		}
 		LinkSendMessage(event, 10)
+		af:GetChild("TopText"):aux(0)
+		af:GetChild("TopText"):playcommand("Refresh")
 	end,
 }
 
@@ -191,15 +195,18 @@ t[#t+1] = LoadFont("Common Normal")..{
 	Name="TopText",
 	Text="",
 	InitCommand=function(self)
-		self:shadowlength(1):y(-140):aux(0)
+		self:shadowlength(1):y(-170):aux(0)
 	end,
 	RefreshCommand=function(self)
+		SCREENMAN:SystemMessage("penice")
 		if self:getaux() == 0 then
 			self:settext("Waiting...")
 		elseif self:getaux() == 1 then
 			self:settext("Favor song")
 		elseif self:getaux() == 2 then
 			self:settext("Disfavor song")
+		elseif self:getaux() == 3 then
+			self:settext("Confirm picks")
 		else
 			self:settext("Invalid aux value")
 		end

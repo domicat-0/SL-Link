@@ -6,6 +6,7 @@ SL.Global.LinkInputCallback = function(event)
 	if not event or not event.PlayerNumber then
 		return false
 	end
+	if event.type ~= "InputEventType_FirstPress" then return false end
 	if event.GameButton == "Start" then
 		local ev = {
 			type="WebSocketMessageType_Message",

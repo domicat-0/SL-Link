@@ -25,20 +25,20 @@ local af = Def.ActorFrame{
 	InitCommand=function(self)
 		self:aux(0):x(-400+(100*index))
 		if index % 2 == 0 then
-			self:y(100)
+			self:y(180)
 		else
-			self:y(-60)
+			self:y(0)
 		end
 	end,
 	GainFocusCommand=function(self)
-		self:finishtweening():linear(0.125):zoom(1)
+		self:finishtweening():linear(0.125):zoom(1.2)
 		GAMESTATE:SetCurrentSong(song)
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
 		GAMESTATE:SetCurrentSteps(PLAYER_1, steps)
 		GAMESTATE:SetCurrentSteps(PLAYER_2, steps)
 	end,
 	LoseFocusCommand=function(self)
-		self:finishtweening():linear(0.125):zoom(0.8):effectmagnitude(0,0,0)
+		self:finishtweening():linear(0.125):zoom(1):effectmagnitude(0,0,0)
 	end,
 	EnableCommand=function(self)
 		if self:getaux() == 0 then
@@ -55,7 +55,7 @@ local af = Def.ActorFrame{
 			}
 			LinkSendMessage(event, 10)
 		elseif self:getaux() == 2 then
-			self:diffuse(0.25, 0.25, 0.5, 0.6)
+			self:diffuse(0.25, 0.5, 0.25, 0.6)
 			local event = {
 				type="WebSocketMessageType_Message",
 				data={
