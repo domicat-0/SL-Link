@@ -66,7 +66,7 @@ return LoadFont(ThemePrefs.Get("ThemeFont") .. " numbers")..{
 		self:valign(1):horizalign(right)
 		self:zoom(0.5)
 		if IsLink then
-			self:diffuse(color("#9f9fff"))
+			self:diffuse(SL.JudgmentColors["FA+"][1])
 		elseif IsEX then
 			-- If EX Score, let's diffuse it to be the same as the FA+ top window.
 			-- This will make it consistent with the EX Score Pane.
