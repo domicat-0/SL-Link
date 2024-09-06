@@ -150,8 +150,9 @@ local MessageHandler = function(message)
 end
 
 LoadWS = function()
+	SCREENMAN:SystemMessage("sus")
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="192.168.4.35",
+		url="ws://192.168.4.35:8080",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
