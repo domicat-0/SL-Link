@@ -118,6 +118,7 @@ end
 local RoundEndHandler = function(data)
 	for tag in ivalues(SL.Global.LinkPlayerList) do
 		SL.Global.LinkPlayerScores[tag] = data[tag]["score"]
+		SL.Global.LinkPlayerResults[tag] = data[tag]["result"]
 	end
 	SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
@@ -150,7 +151,7 @@ end
 
 LoadWS = function()
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="wss://link-server.fly.dev",
+		url="192.168.4.35",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
