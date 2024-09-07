@@ -174,6 +174,7 @@ LoadWS = function()
 					}
 				}
 				SL.Global.LinkWS:Send(JsonEncode(event))
+				SL.Global.LinkWS:Send(JsonEncode(event))
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
