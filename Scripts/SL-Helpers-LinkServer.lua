@@ -158,18 +158,21 @@ LoadWS = function()
 			["Cookie"]="sessionId=42",
 		},
 		handshakeTimeout=5,
-		pingInterval=60,
+		pingInterval=10,
 		automaticReconnect=false,
 		onMessage=function(message)
 			local msgType = ToEnumShortString(message.type)
 			if msgType == "Open" then
+				local event = {
+					type="WebSocketMessageType_Open"
+				}
+				SL.Global.LinkWS:Send(JsonEncode(event))
 				local event = {
 					type="WebSocketMessageType_Message",
 					data={
 						type="join"
 					}
 				}
-				SL.Global.LinkWS:Send(JsonEncode(event))
 				SL.Global.LinkWS:Send(JsonEncode(event))
 			elseif msgType == "Message" then
 				MessageHandler(message)
