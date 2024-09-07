@@ -170,7 +170,8 @@ LoadWS = function()
 				local event = {
 					type="WebSocketMessageType_Message",
 					data={
-						type="join"
+							type="join",
+						name=PROFILEMAN:GetPlayerName(PLAYER_1)
 					}
 				}
 				SL.Global.LinkWS:Send(JsonEncode(event))

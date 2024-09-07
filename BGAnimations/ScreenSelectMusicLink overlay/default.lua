@@ -151,13 +151,7 @@ local t = Def.ActorFrame{
 		af:GetChild("TopText"):playcommand("Refresh")
 	end,
 	OnCommand=function(self)
-		local event = {
-			type="WebSocketMessageType_Message",
-			data={
-				type="draft_ready"
-			}
-		}
-		LinkSendMessage(event, 10)
+
 	end,
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
