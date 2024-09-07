@@ -82,6 +82,7 @@ end
 
 local DraftStartHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
+	SL.Global.LinkPlayerNames = data["names"]
 	local song_hashes = data["songs"]
 	SL.Global.LinkDraftSongList = {}
 	for i, hash in ipairs(song_hashes) do

@@ -50,7 +50,7 @@ local af = Def.ActorFrame{
 				data={
 					type="select",
 					song=steps_hash,
-					weight=-1,
+					subtype="ban"
 				}
 			}
 			LinkSendMessage(event, 10)
@@ -61,7 +61,7 @@ local af = Def.ActorFrame{
 				data={
 					type="select",
 					song=steps_hash,
-					weight=1,
+					subtype="pick"
 				}
 			}
 			LinkSendMessage(event, 10)

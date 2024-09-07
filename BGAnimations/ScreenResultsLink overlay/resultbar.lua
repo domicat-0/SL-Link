@@ -37,7 +37,7 @@ af[#af+1] = Def.Quad {
 
 af[#af+1] = LoadFont("Common Normal")..{
 	Name="",
-	Text=tag,
+	Text=SL.Global.LinkPlayerNames[tag],
 	InitCommand = function(self)
 		self:zoom(1)
 		self:x(-10)

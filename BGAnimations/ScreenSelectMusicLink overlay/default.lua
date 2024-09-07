@@ -166,7 +166,7 @@ local t = Def.ActorFrame{
 		local event = {
 			type="WebSocketMessageType_Message",
 			data={
-				type="match_ready"
+				type="ready"
 			}
 		}
 		LinkSendMessage(event, 10)
