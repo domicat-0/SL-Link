@@ -182,8 +182,11 @@ LoadWS = function()
 				local event = {
 					type="WebSocketMessageType_Close",
 				}
+				-- back to title screen
 				SL.Global.LinkWS:Send(JsonEncode(event))
-				local topscreen = SCREENMAN:GetTopScreen()
+				local top_screen = SCREENMAN:GetTopScreen()
+	 			local prev_screen_name = top_screen:GetPrevScreenName()
+	 			top_screen:SetNextScreenName(prev_screen_name):StartTransitioningScreen("SM_GoToNextScreen")
 				SL.Global.GameOver = true
 			end
 		end,
