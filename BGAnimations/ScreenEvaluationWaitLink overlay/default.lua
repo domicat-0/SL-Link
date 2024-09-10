@@ -8,7 +8,7 @@ local t = Def.ActorFrame{
 		event = {
 			type="WebSocketMessageType_Message",
 			data={
-				type="song_result",
+				type="result",
 				score=percent
 			}
 		}
