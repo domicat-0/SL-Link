@@ -100,6 +100,7 @@ local GameStartHandler = function(data)
 	end
 	SL.Global.LinkRoundNumber = 1
 	SL.Global.LinkPlayerScores = {}
+	SL.Global.LinkPlayerResults = {}
 	for tag in ivalues(SL.Global.LinkPlayerList) do
 		SL.Global.LinkPlayerScores[tag] = 0
 	end
