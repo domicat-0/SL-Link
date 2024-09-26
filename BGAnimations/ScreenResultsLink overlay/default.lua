@@ -26,6 +26,7 @@ t[#t+1] = Def.Quad {
 
 local idx = 1
 for tag, score in pairs(SL.Global.LinkPlayerScores) do
+	SCREENMAN:SystemMessage(JsonEncode(SL.Global.LinkPlayerResults))
 	t[#t+1] = LoadActor("./resultbar.lua", {tag, score, 0, -100 + idx*50})
 	idx = idx + 1
 end

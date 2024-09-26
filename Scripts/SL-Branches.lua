@@ -54,6 +54,10 @@ SelectMusicOrCourse = function()
 			SL.Global.FirstVisit = true
 			return "ScreenSelectMusicDraft"
 		elseif SL.Global.GameMode == "Link" then
+			SL.Global.LinkPlayerList = {}
+			SL.Global.LinkPlayerNames = {}
+			SL.Global.LinkPlayerReady = {}
+			LoadWS()
 			return "ScreenInitLink"
 		end
 

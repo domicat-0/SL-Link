@@ -8,6 +8,7 @@ SL.Global.LinkInputCallback = function(event)
 	end
 	if event.type ~= "InputEventType_FirstPress" then return false end
 	if event.GameButton == "Start" then
+		SCREENMAN:SystemMessage(SL.Global.LinkPlayerTag)
 		local ev = {
 			type="WebSocketMessageType_Message",
 			data={
@@ -26,7 +27,7 @@ local t = Def.ActorFrame {
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
-		for i,child in ipairs(self:GetChild("")) do
+		for child, i in ipairs(self:GetChild("")) do
 			if i-2 == SL.Global.LinkRoundNumber then
 				child:diffuse(1, 1, 1, 1)
 			end
@@ -37,7 +38,7 @@ local t = Def.ActorFrame {
 t[#t+1] = Def.Quad {
 	InitCommand=function(self) 
 		self:FullScreen():diffuse(0,0,0,0.85):xy(0, 0) 
-	end,
+	end
 }
 
 t[#t+1] = LoadActor("./tile.lua", {active_song, -200, -80, "main"})

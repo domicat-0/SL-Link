@@ -72,12 +72,23 @@ local ErrorHandler = function(data)
 end
 
 local JoinHandler = function(data)
-	SL.Global.LinkPlayerTag = data["tag"]
+	SL.Global.LinkPlayerTag = data["tag"][1]
 end
 
 local PlayerUpdateHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
-	PlayerListUpdate()
+	SL.Global.LinkPlayerNames = data["names"]
+	if SCREENMAN:GetTopScreen() then
+		SCREENMAN:GetTopScreen():playcommand("Refresh")
+	end
+end
+
+local PlayerReadyHandler = function(data)
+	local tag = data["player"]
+	SL.Global.LinkPlayerReady[tag] = true
+	if SCREENMAN:GetTopScreen() then
+		SCREENMAN:GetTopScreen():playcommand("Refresh")
+	end
 end
 
 local DraftStartHandler = function(data)
@@ -134,8 +145,10 @@ local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
 	if data["type"] == "join" then
 		JoinHandler(data)
-	elseif data["type"] == "update" then
+	elseif data["type"] == "player_update" then
 		PlayerUpdateHandler(data)
+	elseif data["type"] == "player_ready" then
+		PlayerReadyHandler(data)
 	elseif data["type"] == "draft_start" then
 		DraftStartHandler(data)
 	elseif data["type"] == "round_start" then
@@ -152,15 +165,20 @@ local MessageHandler = function(message)
 end
 
 LoadWS = function()
-	SCREENMAN:SystemMessage("sus")
+	if SL.Global.LinkWS then
+		local event = {
+			type="WebSocketMessageType_Close",
+		}
+		SL.Global.LinkWS:Send(JsonEncode(event))
+	end
 	SL.Global.LinkWS = NETWORK:WebSocket{
 		url="ws://192.168.4.35:8080",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
 		},
-		handshakeTimeout=5,
-		pingInterval=10,
+		handshakeTimeout=2,
+		pingInterval=2,
 		automaticReconnect=false,
 		onMessage=function(message)
 			local msgType = ToEnumShortString(message.type)
@@ -188,7 +206,8 @@ LoadWS = function()
 				local top_screen = SCREENMAN:GetTopScreen()
 	 			local prev_screen_name = top_screen:GetPrevScreenName()
 	 			top_screen:SetNextScreenName(prev_screen_name):StartTransitioningScreen("SM_GoToNextScreen")
-				SL.Global.GameOver = true
+				SL.Global.GameOver = nil
+				SL.Global.LinkWS = nil
 			end
 		end,
 	}
