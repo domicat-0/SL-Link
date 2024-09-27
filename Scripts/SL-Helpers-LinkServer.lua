@@ -72,7 +72,7 @@ local ErrorHandler = function(data)
 end
 
 local JoinHandler = function(data)
-	SL.Global.LinkPlayerTag = data["tag"][1]
+	SL.Global.LinkPlayerTag = data["tag"]
 end
 
 local PlayerUpdateHandler = function(data)
@@ -96,6 +96,9 @@ local DraftStartHandler = function(data)
 	SL.Global.LinkPlayerNames = data["names"]
 	local song_hashes = data["songs"]
 	SL.Global.LinkDraftSongList = {}
+	for tag in ivalues(SL.Global.LinkPlayerList) do
+		SL.Global.LinkPlayerReady[tag] = false
+	end
 	for i, hash in ipairs(song_hashes) do
 		SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
 	end
@@ -126,6 +129,9 @@ local RoundStartHandler = function(data)
 	local steps = active_song:GetOneSteps(0, "Difficulty_Challenge")
 	GAMESTATE:SetCurrentSteps(PLAYER_1, steps)
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+	for tag in ivalues(SL.Global.LinkPlayerList) do
+		SL.Global.LinkPlayerReady[tag] = false
+	end
 end
 
 local RoundEndHandler = function(data)

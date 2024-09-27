@@ -54,9 +54,9 @@ af[#af+1] = Def.Quad {
 		self:x(10)
 	end,
 	RefreshCommand = function(self)
-		SCREENMAN:SystemMessage(JsonEncode(self:GetParent():getaux()))
+		SCREENMAN:SystemMessage(SL.Global.LinkPlayerTag)
 		local tag = SL.Global.LinkPlayerList[self:GetParent():getaux()]
-		if tag then
+		if tag == SL.Global.LinkPlayerTag then
 			self:diffuse(0.1, 0.4, 0.7, 1)
 		else
 			self:diffuse(0.2, 0.2, 0.2, 1)
