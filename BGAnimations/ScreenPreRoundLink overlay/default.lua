@@ -20,14 +20,14 @@ SL.Global.LinkInputCallback = function(event)
 	end
 end
 
-
 local t = Def.ActorFrame {
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
+		SCREENMAN:SystemMessage("00")
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
-		for child, i in ipairs(self:GetChild("")) do
+		for i, child in ipairs(self:GetChild("")) do
 			if i-2 == SL.Global.LinkRoundNumber then
 				child:diffuse(1, 1, 1, 1)
 			end
@@ -47,9 +47,6 @@ for i,song in ipairs(songlist) do
 	local song_actor = LoadActor("./tile.lua", {song, (-400+100*i), 100, "side"})
 	t[#t+1] = song_actor
 end
-
-
-
 
 t[#t+1] = LoadActor( THEME:GetPathS("ScreenSelectMaster", "change") )..{ Name="Change", IsAction=true, SupportPan=false }
 t[#t+1] = LoadActor( THEME:GetPathS("common", "start") )..{ Name="Start", IsAction=true, SupportPan=false }

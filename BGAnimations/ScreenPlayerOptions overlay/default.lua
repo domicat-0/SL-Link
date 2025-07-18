@@ -257,7 +257,7 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 			-- this should never happen, but hey, might as well check
 			if oldtype == newtype then return end
 
-			local bpms = GetDisplayBPMs(player)
+			local bpms = GetDisplayBPMs(player) or {0, 0}
 			local speedmod = SL[pn].ActiveModifiers.SpeedMod
 			local increment = speedmod_def[newtype].increment
 

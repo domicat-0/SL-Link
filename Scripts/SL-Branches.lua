@@ -50,15 +50,24 @@ SelectMusicOrCourse = function()
 	else
 		if SL.Global.GameMode == "Casual" then
 			return "ScreenSelectMusicCasual"
+
 		elseif SL.Global.GameMode == "Draft" then
 			SL.Global.FirstVisit = true
 			return "ScreenSelectMusicDraft"
+			
 		elseif SL.Global.GameMode == "Link" then
-			SL.Global.LinkPlayerList = {}
-			SL.Global.LinkPlayerNames = {}
-			SL.Global.LinkPlayerReady = {}
-			LoadWS()
-			return "ScreenInitLink"
+			for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+				local pn = ToEnumShortString(player)
+				if SL[pn].PlayerOptionsString then
+					if SL[pn].PlayerOptionsString ~= GAMESTATE:GetPlayerState(player):GetPlayerOptionsString("ModsLevel_Preferred") then
+						GAMESTATE:GetPlayerState(player):SetPlayerOptions("ModsLevel_Preferred", SL[pn].PlayerOptionsString)
+
+						-- ensure that FailSetting is maintained according to whatever the machine operator set in Advanced Options
+						GAMESTATE:GetPlayerState(player):GetPlayerOptions("ModsLevel_Preferred"):FailSetting( GetDefaultFailType() )
+					end
+				end
+			end
+			return "ScreenPlayerOptions"
 		end
 
 		return "ScreenSelectMusic"
@@ -385,4 +394,21 @@ Branch.ToGameplayDraft = function()
 		GAMESTATE:SetCurrentSteps(PLAYER_2, steps)
 		return "ScreenGameplay"
 	end
+end
+
+Branch.AfterOptionsScreen = function()
+	if SL.Global.GameMode == "Link" then
+		return "ScreenSelectLinkMode"
+	else
+		return Branch.GameplayScreen()
+	end
+end
+
+Branch.ToInitLink = function()
+	SL.Global.LinkPlayerList = {}
+	SL.Global.LinkPlayerNames = {}
+	SL.Global.LinkPlayerReady = {}
+	SCREENMAN:SystemMessage("000")
+	LoadWS()
+	return "ScreenInitLink"
 end

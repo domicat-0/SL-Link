@@ -384,6 +384,8 @@ local Overrides = {
 							choices[#choices+1] = ("%s %i"):format(THEME:GetString("Difficulty", ToEnumShortString(steps:GetDifficulty())), steps:GetMeter())
 						end
 					end
+				else
+					choices[#choices+1] = ""
 				end
 			else
 				local course = GAMESTATE:GetCurrentCourse()
@@ -978,7 +980,7 @@ local Overrides = {
 		end,
 		OneChoiceForAllPlayers = true,
 		SaveSelections = function(self, list, pn)
-			if list[1] then SL.Global.ScreenAfter.PlayerOptions = Branch.GameplayScreen() end
+			if list[1] then SL.Global.ScreenAfter.PlayerOptions = Branch.AfterOptionsScreen() end
 
 			if SL.Global.MenuTimer.ScreenSelectMusic > 1 then
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions = SelectMusicOrCourse() end
@@ -1001,7 +1003,7 @@ local Overrides = {
 		end,
 		OneChoiceForAllPlayers = true,
 		SaveSelections = function(self, list, pn)
-			if list[1] then SL.Global.ScreenAfter.PlayerOptions2 = Branch.GameplayScreen() end
+			if list[1] then SL.Global.ScreenAfter.PlayerOptions2 = Branch.AfterOptionsScreen() end
 
 			if SL.Global.MenuTimer.ScreenSelectMusic > 1 then
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions2 = SelectMusicOrCourse() end
@@ -1025,7 +1027,7 @@ local Overrides = {
 		end,
 		OneChoiceForAllPlayers = true,
 		SaveSelections = function(self, list, pn)
-			if list[1] then SL.Global.ScreenAfter.PlayerOptions3 = Branch.GameplayScreen() end
+			if list[1] then SL.Global.ScreenAfter.PlayerOptions3 = Branch.AfterOptionsScreen() end
 
 			if SL.Global.MenuTimer.ScreenSelectMusic > 1 then
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions3 = SelectMusicOrCourse() end
@@ -1048,7 +1050,7 @@ local Overrides = {
 		end,
 		OneChoiceForAllPlayers = true,
 		SaveSelections = function(self, list, pn)
-			if list[1] then SL.Global.ScreenAfter.PlayerOptions4 = Branch.GameplayScreen() end
+			if list[1] then SL.Global.ScreenAfter.PlayerOptions4 = Branch.AfterOptionsScreen() end
 
 			if SL.Global.MenuTimer.ScreenSelectMusic > 1 then
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions4 = SelectMusicOrCourse() end

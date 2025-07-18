@@ -178,7 +178,7 @@ LoadWS = function()
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="ws://192.168.4.35:8080",
+		url="wss://link-server.fly.dev",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
