@@ -408,7 +408,14 @@ Branch.ToInitLink = function()
 	SL.Global.LinkPlayerList = {}
 	SL.Global.LinkPlayerNames = {}
 	SL.Global.LinkPlayerReady = {}
-	SCREENMAN:SystemMessage("000")
 	LoadWS()
 	return "ScreenInitLink"
+end
+
+Branch.SelectMusicOrCourseB = function()
+	if SL.GameMode == "Link" then
+		CloseWS()
+		return Branch.TitleMenu()
+	end
+	return SelectMusicOrCourseB()
 end

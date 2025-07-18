@@ -145,6 +145,7 @@ end
 
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
+	CloseWS()
 end
 
 local MessageHandler = function(message)
@@ -188,6 +189,7 @@ LoadWS = function()
 		automaticReconnect=false,
 		onMessage=function(message)
 			local msgType = ToEnumShortString(message.type)
+			SCREENMAN:SystemMessage(msgType)
 			if msgType == "Open" then
 				local event = {
 					type="WebSocketMessageType_Open"
@@ -207,17 +209,28 @@ LoadWS = function()
 				local event = {
 					type="WebSocketMessageType_Close",
 				}
-				-- back to title screen
-				SL.Global.LinkWS:Send(JsonEncode(event))
-				local top_screen = SCREENMAN:GetTopScreen()
-	 			local prev_screen_name = top_screen:GetPrevScreenName()
-	 			top_screen:SetNextScreenName(prev_screen_name):StartTransitioningScreen("SM_GoToNextScreen")
-				SL.Global.GameOver = nil
-				SL.Global.LinkWS = nil
 			end
 		end,
 	}
 	SL.Global.LinkConnected = true
+end
+
+CloseWS = function()
+	if SL.Global.LinkWS then
+		local event = {
+			type="WebSocketMessageType_Close",
+		}
+		SL.Global.LinkWS:Send(JsonEncode(event))
+	end
+	SL.Global.LinkConnected = false
+	if SL.Global.GameMode == "Link" then
+	-- back to title screen
+		SL.Global.LinkWS:Send(JsonEncode(event))
+		local top_screen = SCREENMAN:GetTopScreen()
+			top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
+		SL.Global.GameOver = nil
+		SL.Global.LinkWS = nil
+	end
 end
 
 LinkSendMessage = function(event, retries)
