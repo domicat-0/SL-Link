@@ -364,14 +364,7 @@ end
 
 Branch.AfterResultsLink = function()
 	if SL.Global.LinkGameOver == true then
-		if SL.Global.LinkWS then
-			SL.Global.LinkWS:Close()
-		end
-		SL.Global.LinkPlayerTag = nil
-		SL.Global.LinkPlayerList = nil
-		SL.Global.LinkMasterSongList = nil
-		SL.Global.LinkDraftSongList = nil
-		SL.Global.LinkConnected = nil
+		CloseWS(0)
 		return Branch.TitleMenu()
 	else
 		return "ScreenPreRoundLink"
@@ -412,10 +405,3 @@ Branch.ToInitLink = function()
 	return "ScreenInitLink"
 end
 
-Branch.SelectMusicOrCourseB = function()
-	if SL.GameMode == "Link" then
-		CloseWS()
-		return Branch.TitleMenu()
-	end
-	return SelectMusicOrCourseB()
-end

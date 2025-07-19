@@ -8,7 +8,6 @@ SL.Global.LinkInputCallback = function(event)
 	end
 	if event.type ~= "InputEventType_FirstPress" then return false end
 	if event.GameButton == "Start" then
-		SCREENMAN:SystemMessage(SL.Global.LinkPlayerTag)
 		local ev = {
 			type="WebSocketMessageType_Message",
 			data={
@@ -23,7 +22,6 @@ end
 local t = Def.ActorFrame {
 	InitCommand=function(self)
 		self:xy(_screen.cx, _screen.cy)
-		SCREENMAN:SystemMessage("00")
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)

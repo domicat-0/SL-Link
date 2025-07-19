@@ -145,7 +145,7 @@ end
 
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
-	CloseWS()
+	CloseWS(data["exit"])
 end
 
 local MessageHandler = function(message)
@@ -206,14 +206,14 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
-				CloseWS()
+				CloseWS(1)
 			end
 		end,
 	}
 	SL.Global.LinkConnected = true
 end
 
-CloseWS = function()
+CloseWS = function(exit_code)
 	if SL.Global.LinkWS then
 		local event = {
 			type="WebSocketMessageType_Close",
@@ -221,14 +221,20 @@ CloseWS = function()
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end
 	SL.Global.LinkConnected = false
-	if SL.Global.GameMode == "Link" then
+	SL.Global.GameOver = nil
+	SL.Global.LinkWS = nil
+	SL.Global.LinkPlayerTag = nil
+	SL.Global.LinkPlayerList = nil
+	SL.Global.LinkMasterSongList = nil
+	SL.Global.LinkDraftSongList = nil
+	if SL.Global.GameMode == "Link" and exit_code ~= 0 then
 	-- back to title screen
 		local top_screen = SCREENMAN:GetTopScreen()
 			top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
-		SL.Global.GameOver = nil
-		SL.Global.LinkWS = nil
 	end
 end
+
+
 
 LinkSendMessage = function(event, retries)
 	if retries == 0 then
