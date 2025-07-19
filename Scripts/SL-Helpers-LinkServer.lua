@@ -206,9 +206,7 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
-				local event = {
-					type="WebSocketMessageType_Close",
-				}
+				CloseWS()
 			end
 		end,
 	}
