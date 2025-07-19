@@ -150,7 +150,7 @@ end
 
 local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
-	SCREENMAN:SystemMessage(data)
+	SCREENMAN:SystemMessage(message["data"])
 	if data["type"] == "join" then
 		JoinHandler(data)
 	elseif data["type"] == "player_update" then
