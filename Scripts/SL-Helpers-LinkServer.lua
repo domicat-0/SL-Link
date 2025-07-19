@@ -150,6 +150,7 @@ end
 
 local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
+	SCREENMAN:SystemMessage(data)
 	if data["type"] == "join" then
 		JoinHandler(data)
 	elseif data["type"] == "player_update" then
@@ -189,7 +190,6 @@ LoadWS = function()
 		automaticReconnect=false,
 		onMessage=function(message)
 			local msgType = ToEnumShortString(message.type)
-			SCREENMAN:SystemMessage(msgType)
 			if msgType == "Open" then
 				local event = {
 					type="WebSocketMessageType_Open"
@@ -223,7 +223,6 @@ CloseWS = function()
 	SL.Global.LinkConnected = false
 	if SL.Global.GameMode == "Link" then
 	-- back to title screen
-		SL.Global.LinkWS:Send(JsonEncode(event))
 		local top_screen = SCREENMAN:GetTopScreen()
 			top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
 		SL.Global.GameOver = nil

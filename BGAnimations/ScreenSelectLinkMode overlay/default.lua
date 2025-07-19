@@ -10,7 +10,6 @@ end
 
 local t = Def.ActorFrame {
 	InitCommand=function(self)
-		SCREENMAN:SystemMessage("Ready")
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
