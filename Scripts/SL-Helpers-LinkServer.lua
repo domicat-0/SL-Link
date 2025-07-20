@@ -145,12 +145,13 @@ end
 
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
+	SM("Game end message sent")
 	CloseWS(data["exit"])
 end
 
 local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
-	SCREENMAN:SystemMessage(message["data"])
+	-- SCREENMAN:SystemMessage(message["data"])
 	if data["type"] == "join" then
 		JoinHandler(data)
 	elseif data["type"] == "player_update" then
@@ -206,6 +207,7 @@ LoadWS = function()
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
+				SM("Close message sent")
 				CloseWS(1)
 			end
 		end,

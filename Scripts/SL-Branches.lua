@@ -364,6 +364,7 @@ end
 
 Branch.AfterResultsLink = function()
 	if SL.Global.LinkGameOver == true then
+		SM("Game over")
 		CloseWS(0)
 		return Branch.TitleMenu()
 	else
@@ -401,6 +402,7 @@ Branch.ToInitLink = function()
 	SL.Global.LinkPlayerList = {}
 	SL.Global.LinkPlayerNames = {}
 	SL.Global.LinkPlayerReady = {}
+	SM("Loading WS")
 	LoadWS()
 	return "ScreenInitLink"
 end
