@@ -223,7 +223,7 @@ CloseWS = function(exit_code)
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end
 	SL.Global.LinkConnected = false
-	SL.Global.GameOver = nil
+	SL.Global.LinkGameOver = nil
 	SL.Global.LinkWS = nil
 	SL.Global.LinkPlayerTag = nil
 	SL.Global.LinkPlayerList = nil

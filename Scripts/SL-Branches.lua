@@ -78,9 +78,7 @@ SelectMusicOrCourseB = function()
 	if SL.Global.GameMode ~= "Link" then
 		return SelectMusicOrCourse()
 	else
-		SL.Global.LinkGameOver = true
-		SM("Back button tripped")
-		return Branch.AfterResultsLink()
+		return "ScreenBackLink"
 	end
 end
 
