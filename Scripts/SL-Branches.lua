@@ -79,6 +79,7 @@ SelectMusicOrCourseB = function()
 		return SelectMusicOrCourse()
 	else
 		SL.Global.LinkGameOver = true
+		SM("Back button tripped")
 		return Branch.AfterResultsLink()
 	end
 end
