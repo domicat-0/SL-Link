@@ -4,7 +4,6 @@ local t = Def.ActorFrame{
 	end,
 	OnCommand=function(self)
 		SL.Global.LinkGameOver = true
-		SM("Back button tripped")
 		CloseWS(1)
 		top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
 	end,

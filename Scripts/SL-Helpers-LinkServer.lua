@@ -232,7 +232,10 @@ CloseWS = function(exit_code)
 	if SL.Global.GameMode == "Link" and exit_code ~= 0 then
 	-- back to title screen
 		local top_screen = SCREENMAN:GetTopScreen()
-			top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
+		top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
+	else 
+		local top_screen = SCREENMAN:GetTopScreen()
+		top_screen:SetNextScreenName(Branch.TitleMenu())
 	end
 end
 
