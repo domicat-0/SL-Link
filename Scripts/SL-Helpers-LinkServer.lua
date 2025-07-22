@@ -145,6 +145,7 @@ end
 
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
+	SL.Global.LinkExitValid = true
 	SM("Game end message sent")
 	CloseWS(data["exit"])
 end
@@ -208,7 +209,12 @@ LoadWS = function()
 				MessageHandler(message)
 			elseif msgType == "Close" then
 				SM("Close message sent")
-				CloseWS(1)
+				if SL.Global.LinkExitValid then
+					SL.Global.LinkExitValid = false
+					CloseWS(0)
+				else
+					CloseWS(1)
+				end
 			end
 		end,
 	}
