@@ -230,11 +230,12 @@ CloseWS = function(exit_code)
 	end
 	SL.Global.LinkConnected = false
 	SL.Global.LinkWS = nil
-	SL.Global.LinkPlayerTag = nil
-	SL.Global.LinkPlayerList = nil
-	SL.Global.LinkMasterSongList = nil
-	SL.Global.LinkDraftSongList = nil
+
 	if SL.Global.GameMode == "Link" and exit_code ~= 0 then
+		SL.Global.LinkPlayerTag = nil
+		SL.Global.LinkPlayerList = nil
+		SL.Global.LinkMasterSongList = nil
+		SL.Global.LinkDraftSongList = nil
 		SL.Global.LinkGameOver = nil
 	-- back to title screen
 		local top_screen = SCREENMAN:GetTopScreen()
