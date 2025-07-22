@@ -223,19 +223,16 @@ CloseWS = function(exit_code)
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end
 	SL.Global.LinkConnected = false
-	SL.Global.LinkGameOver = nil
 	SL.Global.LinkWS = nil
 	SL.Global.LinkPlayerTag = nil
 	SL.Global.LinkPlayerList = nil
 	SL.Global.LinkMasterSongList = nil
 	SL.Global.LinkDraftSongList = nil
 	if SL.Global.GameMode == "Link" and exit_code ~= 0 then
+		SL.Global.LinkGameOver = nil
 	-- back to title screen
 		local top_screen = SCREENMAN:GetTopScreen()
 		top_screen:SetNextScreenName(Branch.TitleMenu()):StartTransitioningScreen("SM_GoToNextScreen")
-	else 
-		local top_screen = SCREENMAN:GetTopScreen()
-		top_screen:SetNextScreenName(Branch.TitleMenu())
 	end
 end
 

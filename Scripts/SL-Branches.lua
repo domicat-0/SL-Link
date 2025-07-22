@@ -365,6 +365,7 @@ Branch.AfterResultsLink = function()
 	if SL.Global.LinkGameOver == true then
 		SM("Game over")
 		CloseWS(0)
+		SL.Global.LinkGameOver = nil
 		return Branch.TitleMenu()
 	else
 		return "ScreenPreRoundLink"
