@@ -49,4 +49,13 @@ end
 t[#t+1] = LoadActor( THEME:GetPathS("ScreenSelectMaster", "change") )..{ Name="Change", IsAction=true, SupportPan=false }
 t[#t+1] = LoadActor( THEME:GetPathS("common", "start") )..{ Name="Start", IsAction=true, SupportPan=false }
 
+t[#t+1] = LoadFont("Common Normal")..{
+	Name="StartConf",
+	InitCommand = function(self)
+		self:zoom(1)
+		self:y(180)
+		self:settext( THEME:GetString("ScreenTitleJoin", "StartConf"))
+	end
+}
+
 return t

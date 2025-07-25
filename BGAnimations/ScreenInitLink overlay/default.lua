@@ -37,7 +37,16 @@ t[#t+1] = Def.Quad {
 }
 
 for idx=1,6 do
-	t[#t+1] = LoadActor("./resultbar.lua", {idx, 0, 0, -175 + idx*50})
+	t[#t+1] = LoadActor("./resultbar.lua", {idx, 0, 0, -195 + idx*50})
 end
+
+t[#t+1] = LoadFont("Common Normal")..{
+	Name="StartConf",
+	InitCommand = function(self)
+		self:zoom(1)
+		self:y(180)
+		self:settext( THEME:GetString("ScreenTitleJoin", "StartConf"))
+	end
+}
 
 return t  
