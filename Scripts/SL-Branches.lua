@@ -406,7 +406,6 @@ Branch.ToInitLink = function()
 	SL.Global.LinkPlayerList = {}
 	SL.Global.LinkPlayerNames = {}
 	SL.Global.LinkPlayerReady = {}
-	SM("Loading WS")
 	LoadWS()
 	return "ScreenInitLink"
 end

@@ -68,7 +68,7 @@ local GetSongFromHash = function(hash)
 end
 
 local ErrorHandler = function(data)
-	SCREENMAN:SystemMessage(data["message"])
+	SCREENMAN:SystemMessage("Error: " .. data["message"])
 end
 
 local JoinHandler = function(data)
@@ -146,7 +146,6 @@ end
 local GameEndHandler = function(data)
 	SL.Global.LinkGameOver = true
 	SL.Global.LinkExitValid = true
-	SM("Game end message sent")
 	CloseWS(data["exit"])
 end
 
