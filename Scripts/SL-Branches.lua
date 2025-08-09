@@ -396,17 +396,20 @@ end
 
 Branch.AfterOptionsScreen = function()
 	if SL.Global.GameMode == "Link" then
-		return "ScreenSelectLinkMode"
+		return "ScreenPreRoomSelect"
 	else
 		return Branch.GameplayScreen()
 	end
 end
 
-Branch.ToInitLink = function()
-	SL.Global.LinkPlayerList = {}
-	SL.Global.LinkPlayerNames = {}
-	SL.Global.LinkPlayerReady = {}
-	LoadWS()
-	return "ScreenInitLink"
+Branch.ToRoomSelect = function()
+	return "ScreenSelectLinkMode"
 end
 
+Branch.AfterRoomSelect = function()
+	if SL.Global.LinkCreateRoom then
+		return "ScreenCreateRoomLink"
+	else
+		return "ScreenInitLink"
+	end
+end

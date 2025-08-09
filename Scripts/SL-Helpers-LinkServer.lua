@@ -73,7 +73,26 @@ end
 
 local JoinHandler = function(data)
 	SL.Global.LinkPlayerTag = data["tag"]
+	SL.Global.LinkCreateRoom = false
+	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
+
+local JoinFailedHandler = function(data)
+	SM("Room join failed...")
+end
+
+local RoomInfoHandler = function(data)
+	SL.Global.LinkRoomList = data["tags"]
+	SL.Global.LinkRoomNames = data["names"]
+	SL.Global.LinkRoomCounts = data["player_counts"]
+	SL.Global.LinkRoomGrades = data["grades"]
+	if SCREENMAN:GetTopScreen():GetName() == "ScreenPreRoomSelect" then
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+	elseif SCREENMAN:GetTopScreen():GetName() == "ScreenSelectLinkMode" then
+		SCREENMAN:GetTopScreen():PlayCommand("Refresh")
+	end
+end
+
 
 local PlayerUpdateHandler = function(data)
 	SL.Global.LinkPlayerList = data["players"]
@@ -104,7 +123,6 @@ local DraftStartHandler = function(data)
 	end
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
-
 
 local GameStartHandler = function(data)
 	local song_hashes = data["songs"]
@@ -151,9 +169,11 @@ end
 
 local MessageHandler = function(message)
 	local data = JsonDecode(message["data"])
-	-- SCREENMAN:SystemMessage(message["data"])
+	SCREENMAN:SystemMessage(message["data"])
 	if data["type"] == "join" then
 		JoinHandler(data)
+	elseif data["type"] == "room_info" then
+		RoomInfoHandler(data)
 	elseif data["type"] == "player_update" then
 		PlayerUpdateHandler(data)
 	elseif data["type"] == "player_ready" then
@@ -181,7 +201,7 @@ LoadWS = function()
 		SL.Global.LinkWS:Send(JsonEncode(event))
 	end
 	SL.Global.LinkWS = NETWORK:WebSocket{
-		url="wss://link-server.fly.dev",
+		url="wss://link-server-next.fly.dev",
 		headers={                                       -- default: {}
 			["Accept-Language"]="en-US",
 			["Cookie"]="sessionId=42",
@@ -199,7 +219,7 @@ LoadWS = function()
 				local event = {
 					type="WebSocketMessageType_Message",
 					data={
-							type="join",
+						type="request_rooms",
 						name=PROFILEMAN:GetPlayerName(PLAYER_1)
 					}
 				}
