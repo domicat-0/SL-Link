@@ -36,7 +36,6 @@ local af = Def.ActorFrame {
 		if selected then
 			self:x(pos_x+20)
 			self:zoom(1.1)
-			SM(index)
 		else
 			self:x(pos_x)
 		end

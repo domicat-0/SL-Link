@@ -46,7 +46,7 @@ SL.Global.LinkInputCallback = function(event)
 			end
 			af:playcommand("Refresh")
 		elseif event.GameButton == "MenuDown" then
-			if page_length * (current_page - 1) + current_index < #SL.Global.LinkRoomList then
+			if page_length * (current_page - 1) + current_index < #SL.Global.LinkRoomList + 1 then
 				current_index = current_index + 1
 				if current_index > page_length then
 					current_page = current_page + 1

@@ -86,6 +86,7 @@ local RoomInfoHandler = function(data)
 	SL.Global.LinkRoomNames = data["names"]
 	SL.Global.LinkRoomCounts = data["player_counts"]
 	SL.Global.LinkRoomGrades = data["grades"]
+	SL.Global.LinkRoomLocked = data["locked"]
 	if SCREENMAN:GetTopScreen():GetName() == "ScreenPreRoomSelect" then
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 	elseif SCREENMAN:GetTopScreen():GetName() == "ScreenSelectLinkMode" then
