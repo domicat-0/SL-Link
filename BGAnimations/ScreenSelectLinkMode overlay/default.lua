@@ -27,6 +27,8 @@ SL.Global.LinkInputCallback = function(event)
 				type="WebSocketMessageType_Message",
 				data={
 					type="join",
+					tag=tag,
+					pwd=password
 					name=PROFILEMAN:GetPlayerName(PLAYER_1)
 				}
 			}
@@ -73,6 +75,7 @@ SL.Global.LinkInputCallback = function(event)
 						type="WebSocketMessageType_Message",
 						data={
 							type="join",
+							tag=tag,
 							name=PROFILEMAN:GetPlayerName(PLAYER_1)
 						}
 					}
