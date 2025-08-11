@@ -21,14 +21,14 @@ SL.Global.LinkInputCallback = function(event)
 			password = password .. 2
 		elseif event.GameButton == "MenuRight" then
 			password = password .. 3
-		elseif event.GameButton == "MenuStart" then
+		elseif event.GameButton == "Start" then
 
 			data={
 				type="WebSocketMessageType_Message",
 				data={
 					type="join",
 					tag=tag,
-					pwd=password
+					pwd=password,
 					name=PROFILEMAN:GetPlayerName(PLAYER_1)
 				}
 			}

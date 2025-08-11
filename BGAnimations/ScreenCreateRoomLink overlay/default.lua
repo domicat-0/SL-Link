@@ -87,6 +87,7 @@ local t = Def.ActorFrame {
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
+		af:GetChild("GradeField"):aux(1)
 		self:playcommand("Refresh")
 	end,
 	RefreshCommand=function(self)
