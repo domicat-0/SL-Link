@@ -68,7 +68,7 @@ SL.Global.LinkInputCallback = function(event)
 						player_name=PROFILEMAN:GetPlayerName(PLAYER_1),
 						name="Room - " .. PROFILEMAN:GetPlayerName(PLAYER_1),
 						grade=af:GetChild("GradeField"):getaux(),
-						locked=(true and pwd ~= "" or false),
+						locked=(true and password ~= "" or false),
 						pwd=password
 					}
 				}
