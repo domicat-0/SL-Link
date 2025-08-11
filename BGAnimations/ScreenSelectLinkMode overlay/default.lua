@@ -22,9 +22,13 @@ SL.Global.LinkInputCallback = function(event)
 		elseif event.GameButton == "MenuRight" then
 			password = password .. 3
 		elseif event.GameButton == "MenuStart" then
+
 			data={
-				type="join",
-				name=PROFILEMAN:GetPlayerName(PLAYER_1)
+				type="WebSocketMessageType_Message",
+				data={
+					type="join",
+					name=PROFILEMAN:GetPlayerName(PLAYER_1)
+				}
 			}
 			accepting_input = false
 			res = LinkSendMessage(data, 10)
@@ -66,8 +70,11 @@ SL.Global.LinkInputCallback = function(event)
 					password = ""
 				else
 					data={
-						type="join",
-						name=PROFILEMAN:GetPlayerName(PLAYER_1)
+						type="WebSocketMessageType_Message",
+						data={
+							type="join",
+							name=PROFILEMAN:GetPlayerName(PLAYER_1)
+						}
 					}
 					accepting_input = false
 					res = LinkSendMessage(data, 10)
