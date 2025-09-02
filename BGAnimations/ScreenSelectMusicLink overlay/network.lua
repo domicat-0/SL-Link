@@ -26,11 +26,11 @@ local JoinHandler = function(data)
 	SL.Global.LinkPlayerTag = data["tag"]
 
 local PlayerUpdateHandler = function(data)
-	SL.Global.LinkPlayerList = data["players"]
+	SL.Global.LinkMatchPlayerList = data["players"]
 	PlayerListUpdate()
 
 local DraftStartHandler = function(data)
-	SL.Global.LinkPlayerList = data["players"]
+	SL.Global.LinkMatchPlayerList = data["players"]
 	SL.Global.LinkSongList = data["songs"]
 	if SCREENMAN:GetTopScreen():GetName() == ScreenWaitLink then
 		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")

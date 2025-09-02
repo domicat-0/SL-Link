@@ -3,16 +3,21 @@ local t = Def.ActorFrame{
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
-		local rh = GetExJudgmentCounts(PLAYER_1)
-		percent = CalculateExScore(PLAYER_1, rh)
-		event = {
-			type="WebSocketMessageType_Message",
-			data={
-				type="result",
-				score=percent
+		if SL.Global.LinkExit then
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		else
+			local rh = GetExJudgmentCounts(PLAYER_1)
+			percent = CalculateExScore(PLAYER_1, rh)
+			event = {
+				type="WebSocketMessageType_Message",
+				data={
+					type="result",
+					score=percent,
+					players=SL.Global.LinkMatchPlayerList
+				}
 			}
-		}
-		SL.Global.LinkWS:Send(JsonEncode(event))
+			LinkSendMessage(event, 10)
+		end
 	end
 }
 

@@ -15,6 +15,9 @@ local t = Def.ActorFrame {
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
+		if SL.Global.LinkRoundStart then
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		end
 	end
 }
 

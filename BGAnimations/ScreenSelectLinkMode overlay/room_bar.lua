@@ -62,6 +62,8 @@ af[#af+1] = Def.Quad {
 			self:diffuse(0, 0, 0, 0)
 		elseif tag == "create" then
 			self:diffuse(0.15, 0.5, 0.15, 1)
+		elseif SL.Global.LinkRoomTournament[tag] then
+			self:diffuse(0.5, 0.15, 0.3, 1)
 		elseif SL.Global.LinkRoomLocked[tag] then
 			self:diffuse(0.15, 0.15, 0.15, 1)
 		else
@@ -102,6 +104,8 @@ af[#af+1] = LoadFont("Common Normal")..{
 			self:settext("")
 		elseif tag == "create" then
 			self:settext("")
+		elseif SL.Global.LinkRoomTournament[tag] then
+			self:settext(SL.Global.LinkTimeLeft[tag])
 		else
 			self:settext("T" .. SL.Global.LinkRoomGrades[tag] .. "-T" .. SL.Global.LinkRoomGrades[tag]+3)
 		end
@@ -120,6 +124,8 @@ af[#af+1] = LoadFont("Common Normal")..{
 			self:settext("")
 		elseif tag == "create" then
 			self:settext("")
+		elseif SL.Global.LinkRoomTournament[tag] then
+			self:settext(SL.Global.LinkRoomCounts[tag])
 		else
 			self:settext(SL.Global.LinkRoomCounts[tag] .. "/6")
 		end

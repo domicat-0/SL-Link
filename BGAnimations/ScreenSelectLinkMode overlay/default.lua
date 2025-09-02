@@ -22,16 +22,16 @@ SL.Global.LinkInputCallback = function(event)
 		elseif event.GameButton == "MenuRight" then
 			password = password .. 3
 		elseif event.GameButton == "Start" then
-
 			data={
 				type="WebSocketMessageType_Message",
 				data={
-					type="join",
+					type="join_room",
 					tag=tag,
 					pwd=password,
 					name=PROFILEMAN:GetPlayerName(PLAYER_1)
 				}
 			}
+
 			accepting_input = false
 			res = LinkSendMessage(data, 10)
 			if not res then 
@@ -71,14 +71,25 @@ SL.Global.LinkInputCallback = function(event)
 					password_mode = true
 					password = ""
 				else
-					data={
-						type="WebSocketMessageType_Message",
+					if SL.Global.LinkRoomTournament[tag] then
 						data={
-							type="join",
-							tag=tag,
-							name=PROFILEMAN:GetPlayerName(PLAYER_1)
+							type="WebSocketMessageType_Message",
+							data={
+								type="join_tournament",
+								tag=tag,
+								name=PROFILEMAN:GetPlayerName(PLAYER_1)
+							}
 						}
-					}
+					else
+						data={
+							type="WebSocketMessageType_Message",
+							data={
+								type="join_room",
+								tag=tag,
+								name=PROFILEMAN:GetPlayerName(PLAYER_1)
+							}
+						}
+					end
 					accepting_input = false
 					res = LinkSendMessage(data, 10)
 					if not res then accepting_input = true end
@@ -87,6 +98,10 @@ SL.Global.LinkInputCallback = function(event)
 				SL.Global.LinkCreateRoom = true
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 			end
+		elseif event.GameButton == "Back" then
+			topscreen = SCREENMAN:GetTopScreen()
+			topscreen:RemoveInputCallback(SL.Global.LinkInputCallback)
+			topscreen:Cancel()
 		end
 	end
 end

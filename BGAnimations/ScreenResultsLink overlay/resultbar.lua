@@ -39,7 +39,7 @@ af[#af+1] = Def.Quad {
 
 af[#af+1] = LoadFont("Common Normal")..{
 	Name="",
-	Text=SL.Global.LinkPlayerNames[tag],
+	Text=SL.Global.LinkMatchPlayerNames[tag],
 	InitCommand = function(self)
 		self:horizalign(0)
 		self:zoom(1.1)

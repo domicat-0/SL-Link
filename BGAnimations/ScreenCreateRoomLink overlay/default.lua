@@ -76,6 +76,18 @@ SL.Global.LinkInputCallback = function(event)
 				res = LinkSendMessage(data, 10)
 				if not res then accepting_input = true end
 			end
+		elseif event.GameButton == "Back" then
+			local ev = {
+				type="WebSocketMessageType_Message",
+				data={
+					type="leave_room"
+				}
+			}
+			SL.Global.LinkWS:Send(JsonEncode(ev))
+			topscreen = SCREENMAN:GetTopScreen()
+			topscreen:RemoveInputCallback(SL.Global.LinkInputCallback)
+			topscreen:Cancel()	
+
 		end
 	end
 end
