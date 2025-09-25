@@ -1,4 +1,5 @@
-page = 1
+local current_page = 1
+local page_length = 6
 
 SL.Global.LinkInputCallback = function(event)
 	if SL.Global.LinkPlayerReady[SL.Global.LinkPlayerTag] then return false end
@@ -7,13 +8,13 @@ SL.Global.LinkInputCallback = function(event)
 	end
 	if event.type ~= "InputEventType_FirstPress" then return false end
 	if event.GameButton == "MenuLeft" then
-		if page > 1 then
-			page = page - 1
+		if current_page > 1 then
+			current_page = current_page - 1
 			af:playcommand("Refresh")
 		end
 	elseif event.GameButton == "MenuRight" then
-		if #SL.Global.LinkTournamentPlayerList >= 6*page + 1 then
-			page = page + 1
+		if #SL.Global.LinkTournamentPlayerList >= page_length*current_page + 1 then
+			current_page = current_page + 1
 			af:playcommand("Refresh")
 		end
 	elseif event.GameButton == "Back" then
@@ -41,7 +42,9 @@ local t = Def.ActorFrame{
 		self:playcommand("Refresh")
 	end,
 	RefreshCommand=function(self)
-		for child in ivalues(self:GetChild("")) do
+		for i, child in ipairs(self:GetChild("ResultBar")) do
+			local idx = (page_length * (current_page - 1) + i)
+			child:aux(idx)
 			child:playcommand("Refresh")
 		end
 	end
@@ -53,7 +56,9 @@ t[#t+1] = Def.Quad {
 }
 
 for idx=1,6 do
-	t[#t+1] = LoadActor("./resultbar.lua", {idx + (page - 1) * 6, 0, 0, -195 + idx*50})
+	t[#t+1] = LoadActor("./resultbar.lua", {idx + (current_page - 1) * 6, 0, 0, -195 + idx*50})..{
+		Name="ResultBar"
+	}
 end
 
 t[#t+1] = LoadFont("Common Normal")..{

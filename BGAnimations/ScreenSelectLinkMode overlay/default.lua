@@ -90,10 +90,8 @@ SL.Global.LinkInputCallback = function(event)
 							}
 						}
 					end
-					accepting_input = false
-					res = LinkSendMessage(data, 10)
-					if not res then accepting_input = true end
 				end
+				LinkSendMessage(data, 10)
 			elseif page_length * (current_page - 1) + current_index == #SL.Global.LinkRoomList + 1 then
 				SL.Global.LinkCreateRoom = true
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
@@ -112,6 +110,14 @@ local t = Def.ActorFrame {
 		self:xy(_screen.cx, _screen.cy)
 	end,
 	OnCommand=function(self)
+		local event = {
+					type="WebSocketMessageType_Message",
+					data={
+						type="request_rooms",
+						name=PROFILEMAN:GetPlayerName(PLAYER_1)
+					}
+				}
+		LinkSendMessage(event, 10)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
 		self:playcommand("Refresh")
 	end,

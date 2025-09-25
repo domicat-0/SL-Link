@@ -13,6 +13,27 @@ local tag = SL.Global.LinkTournamentPlayerList[idx]
 local af = Def.ActorFrame {
 	InitCommand = function(self)
 		self:x(pos_x):y(pos_y)
+	end,
+	RefreshCommand = function(self)
+		local tag = SL.Global.LinkTournamentPlayerList[self:getaux()]
+		local pname = SL.Global.LinkTournamentPlayerNames[tag]
+		local score = SL.Global.LinkPlayerTournamentScores[tag]
+
+		if score == nil then
+			if pname == nil then
+				self:GetChild("PlayerName"):settext("")
+			else
+				self:GetChild("PlayerName"):settext(pname)
+			end
+			self:diffuse(1, 1, 1, 0.3)
+		else
+			self:GetChild("PlayerName"):settext(pname)
+			self:diffuse(1, 1, 1, 1)
+		end
+
+		for child in ivalues(self:GetChild("")) do
+			child:playcommand("Refresh")
+		end
 	end
 }
 
@@ -38,7 +59,7 @@ af[#af+1] = Def.Quad {
 }
 
 af[#af+1] = LoadFont("Common Normal")..{
-	Name="",
+	Name="PlayerName",
 	Text=SL.Global.LinkTournamentPlayerNames[tag],
 	InitCommand = function(self)
 		self:horizalign(0)
@@ -48,21 +69,41 @@ af[#af+1] = LoadFont("Common Normal")..{
 }
 
 af[#af+1] = LoadFont("Common Normal")..{
-	Name="",
+	Name="Score",
 	Text=SL.Global.LinkPlayerTournamentScores[tag],
 	InitCommand = function(self)
 		self:horizalign(2)
 		self:zoom(1.5)
 		self:x(130)
+	end,
+	RefreshCommand = function(self)
+		local tag = SL.Global.LinkTournamentPlayerList[self:GetParent():getaux()]
+		local score = SL.Global.LinkPlayerTournamentScores[tag]
+
+		if score == nil then
+			self:settext("")
+		else
+			self:settext(score)
+		end
 	end
 }
 af[#af+1] = LoadFont("Common Normal")..{
-	Name="",
+	Name="Position",
 	Text=SL.Global.LinkPlayerTournamentPositions[tag],
 	InitCommand = function(self)
 		self:horizalign(1)
 		self:zoom(1.5)
 		self:x(-120)
+	end,
+	RefreshCommand = function(self)
+		local tag = SL.Global.LinkTournamentPlayerList[self:GetParent():getaux()]
+		local tpos = SL.Global.LinkPlayerTournamentPositions[tag]
+		if tpos == nil then
+			self:settext("")
+		else
+			self:settext(tpos)
+		end
+		
 	end
 }
 
