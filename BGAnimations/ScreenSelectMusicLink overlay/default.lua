@@ -40,8 +40,10 @@ local EnableChoices = function()
 end
 
 -- input callbacks
-if not pick_stage then
-	local pick_stage = 1
+if #songlist == 7 then
+	pick_stage = 1
+else
+	pick_stage = 3
 end
 
 local Select = function(type)
@@ -121,9 +123,6 @@ end
 			else
 				if pick_stage > #pick_type + 1 then
 					return
-				end
-				for player in ivalues(GAMESTATE:GetHumanPlayers()) do
-					ApplyMods(player)
 				end
 				af:queuecommand("Finish", {PlayerNumber=event.PlayerNumber})
 				pick_stage = pick_stage + 1

@@ -3,7 +3,7 @@ local pn = ToEnumShortString(player)
 local mods = SL[pn].ActiveModifiers
 
 --Let's see if we need to let  the player know that they are nice.
-if (ThemePrefs.Get("EnableTournamentMode") or SL.Global.GameMode == "Draft") and ThemePrefs.Get("EnforceNoCmod") then
+if (ThemePrefs.Get("EnableTournamentMode") and ThemePrefs.Get("EnforceNoCmod")) or SL.Global.GameMode == "Draft" or SL.Global.GameMode == "Link" then
     return Def.ActorFrame{
         OnCommand=function(self)
             local song = GAMESTATE:GetCurrentSong()
@@ -11,7 +11,7 @@ if (ThemePrefs.Get("EnableTournamentMode") or SL.Global.GameMode == "Draft") and
                 if (song:GetDisplayFullTitle():lower():match("no cmod") or
                     song:GetTranslitFullTitle():lower():match("no cmod")) then
                     if mods.SpeedModType == "C" then
-                        -- SL[pn].ActiveModifiers.SpeedModType = "M"
+                        SL[pn].ActiveModifiers.SpeedModType = "M"
 
                         local topscreen = SCREENMAN:GetTopScreen():GetName()
                         local modslevel = topscreen  == "ScreenEditOptions" and "ModsLevel_Stage" or "ModsLevel_Preferred"

@@ -25,6 +25,9 @@ local t = Def.ActorFrame {
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
+		if SL.Global.LinkRoundStart then
+			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+		end
 		for i, child in ipairs(self:GetChild("")) do
 			if i-2 == SL.Global.LinkRoundNumber then
 				child:diffuse(1, 1, 1, 1)

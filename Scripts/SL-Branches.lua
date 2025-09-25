@@ -362,17 +362,38 @@ Branch.AfterResultsDraft = function()
 end
 
 Branch.AfterResultsLink = function()
-	if SL.Global.LinkGameOver == true then
+	if SL.Global.LinkExit == true then
 		SM("Game over")
-		CloseWS(0)
+		if SL.Global.LinkWS then
+			CloseWS(0)
+		end
 		SL.Global.LinkPlayerTag = nil
-		SL.Global.LinkPlayerList = nil
+		SL.Global.LinkMatchPlayerList = nil
 		SL.Global.LinkMasterSongList = nil
 		SL.Global.LinkDraftSongList = nil
-		SL.Global.LinkGameOver = nil
+		SL.Global.LinkExit = nil
 		return Branch.TitleMenu()
+	elseif SL.Global.LinkRoundExit then
+		return "ScreenWaitTournamentLink"
 	else
 		return "ScreenPreRoundLink"
+	end
+end
+
+Branch.AfterResultsTournamentLink = function()
+	if SL.Global.LinkExit == true then
+		SM("Game over")
+		if SL.Global.LinkWS then
+			CloseWS(0)
+		end
+		SL.Global.LinkPlayerTag = nil
+		SL.Global.LinkMatchPlayerList = nil
+		SL.Global.LinkMasterSongList = nil
+		SL.Global.LinkDraftSongList = nil
+		SL.Global.LinkExit = nil
+		return Branch.TitleMenu()
+	else
+		return "ScreenRoomMatchLink"
 	end
 end
 
@@ -396,17 +417,24 @@ end
 
 Branch.AfterOptionsScreen = function()
 	if SL.Global.GameMode == "Link" then
-		return "ScreenSelectLinkMode"
+		return "ScreenPreRoomSelect"
 	else
 		return Branch.GameplayScreen()
 	end
 end
 
-Branch.ToInitLink = function()
-	SL.Global.LinkPlayerList = {}
-	SL.Global.LinkPlayerNames = {}
-	SL.Global.LinkPlayerReady = {}
-	LoadWS()
-	return "ScreenInitLink"
+Branch.ToRoomSelect = function()
+	return "ScreenSelectLinkMode"
 end
 
+Branch.AfterRoomSelect = function()
+	if SL.Global.LinkCreateRoom then
+		return "ScreenCreateRoomLink"
+	elseif SL.Global.LinkMatch then
+		return "ScreenRoomMatchLink"
+	elseif SL.Global.LinkTournament then
+		return "ScreenRoomTournamentLink"
+	else
+		return "ScreenCreateRoomLink"
+	end
+end

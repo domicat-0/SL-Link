@@ -16,7 +16,11 @@
 -- those files to learn more.
 ------------------------------------------------------------
 
-local af = Def.ActorFrame{}
+local af = Def.ActorFrame{
+	OnCommand=function(self)
+		SL.Global.LinkRoundStart = nil
+	end
+}
 
 af[#af+1] = LoadActor("./WhoIsCurrentlyWinning.lua")
 af[#af+1] = LoadActor("./FailOnHoldStart.lua")

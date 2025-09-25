@@ -5,18 +5,6 @@ local t = Def.ActorFrame{
 	OnCommand=function(self)
 		if SL.Global.LinkExit then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-		else
-			local rh = GetExJudgmentCounts(PLAYER_1)
-			percent = CalculateExScore(PLAYER_1, rh)
-			event = {
-				type="WebSocketMessageType_Message",
-				data={
-					type="result",
-					score=percent,
-					players=SL.Global.LinkMatchPlayerList
-				}
-			}
-			LinkSendMessage(event, 10)
 		end
 	end
 }
@@ -27,7 +15,7 @@ t[#t+1] = Def.Quad {
 }
 
 t[#t+1] = LoadFont("Common Normal")..{
-	Text="Waiting for players to finish...",
+	Text="Waiting for current round to finish...",
 	InitCommand=function(self)
 		self:shadowlength(1):y(40):zoom(0.8)
 	end
