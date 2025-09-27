@@ -60,7 +60,6 @@ local GetSongFromHash = function(hash)
 		local steps = song:GetOneSteps(0, "Difficulty_Challenge")
 		local fn = steps:GetFilename()
 		local steps_hash = BinaryToHex(CRYPTMAN:MD5File(fn))
-		SM(steps_hash)
 		if steps_hash == hash then
 			return song
 		end

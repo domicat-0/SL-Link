@@ -32,7 +32,6 @@ local t = Def.ActorFrame {
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
 		SL.Global.LinkRoundExit = false
-		SM(SL.Global.LinkPlayerTournamentScores)
 		local tpos = SL.Global.LinkPlayerTournamentPositions[SL.Global.LinkPlayerTag]
 		current_page = (tpos - (tpos % page_length)) / page_length + 1
 		self:playcommand("Refresh")

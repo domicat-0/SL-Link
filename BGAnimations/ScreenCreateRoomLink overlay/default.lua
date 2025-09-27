@@ -1,4 +1,5 @@
 local states = {"GradeField", "PasswordField", "ConfirmField"}
+local tiers = {"T1-T4", "T2-T5", "T3-T6", "T4-T7", "T5-T8", "T6-T9", "T7-T10"}
 local n_grades = 7
 local state_index = 1
 local password_mode = false
@@ -117,9 +118,16 @@ t[#t+1] = Def.Quad {
 
 t[#t+1] = LoadFont("Common Normal")..{
 	Name="GradeTitle",
-	Text="Grade",
+	Text="Room tiers",
 	InitCommand=function(self)
-		self:horizalign(1):vertalign(1):y(-120)
+		self:horizalign(1):vertalign(1):y(-140):zoom(1.5)
+	end,
+	RefreshCommand=function(self)
+		if states[state_index] == "GradeField" then
+			self:diffuse(1, 1, 1, 1):zoom(1.5)
+		else
+			self:diffuse(0.8, 0.8, 0.8, 1):zoom(1.5)
+		end
 	end
 }
 
@@ -131,11 +139,11 @@ t[#t+1] = LoadFont("Common Normal")..{
 	end,
 	RefreshCommand=function(self)
 		if states[state_index] == "GradeField" then
-			self:diffuse(1, 1, 1, 1):zoom(1)
+			self:diffuse(1, 1, 1, 1):zoom(1.3)
 		else
-			self:diffuse(0.8, 0.8, 0.8, 1):zoom(0.75)
+			self:diffuse(0.8, 0.8, 0.8, 1):zoom(1)
 		end
-		self:settext(self:getaux())
+		self:settext(tiers[self:getaux()])
 	end
 }
 
@@ -143,13 +151,13 @@ t[#t+1] = LoadFont("Common Normal")..{
 	Name="PasswordField",
 	Text="Set password...",
 	InitCommand=function(self)
-		self:horizalign(1):vertalign(1):y(-80)
+		self:horizalign(1):vertalign(1):y(-60)
 	end,
 	RefreshCommand=function(self)
 		if states[state_index] == "PasswordField" then
-			self:diffuse(1, 1, 1, 1):zoom(1)
+			self:diffuse(1, 1, 1, 1):zoom(1.3)
 		else
-			self:diffuse(0.8, 0.8, 0.8, 1):zoom(0.75)
+			self:diffuse(0.8, 0.8, 0.8, 1):zoom(1)
 		end
 	end
 }
@@ -158,13 +166,13 @@ t[#t+1] = LoadFont("Common Normal")..{
 	Name="ConfirmField",
 	Text="Confirm",
 	InitCommand=function(self)
-		self:horizalign(1):vertalign(1):y(-50)
+		self:horizalign(1):vertalign(1):y(-20)
 	end,
 	RefreshCommand=function(self)
 		if states[state_index] == "ConfirmField" then
-			self:diffuse(1, 1, 1, 1):zoom(1)
+			self:diffuse(1, 1, 1, 1):zoom(1.3)
 		else
-			self:diffuse(0.8, 0.8, 0.8, 1):zoom(0.75)
+			self:diffuse(0.8, 0.8, 0.8, 1):zoom(1)
 		end
 	end
 }
