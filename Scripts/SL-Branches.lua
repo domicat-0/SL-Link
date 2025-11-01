@@ -374,7 +374,7 @@ Branch.AfterResultsLink = function()
 		SL.Global.LinkExit = nil
 		return Branch.TitleMenu()
 	elseif SL.Global.LinkRoundExit then
-		return "ScreenWaitTournamentLink"
+		return "ScreenResultsTournamentLink"
 	else
 		return "ScreenPreRoundLink"
 	end

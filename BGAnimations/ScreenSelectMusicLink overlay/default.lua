@@ -150,7 +150,17 @@ local t = Def.ActorFrame{
 		af:GetChild("TopText"):playcommand("Refresh")
 	end,
 	OnCommand=function(self)
-
+		if SL.Global.LinkDownloadReady then
+			SCREENMAN:SetNewScreen("ScreenReloadSongsSSL")
+			SL.Global.LinkDownloadReady = false
+		end
+		local timer = SCREENMAN:GetTopScreen():GetChild("Timer")
+		if SL.Global.LinkMatchTimeLeft ~= nil then
+			timer:SetSeconds(SL.Global.LinkMatchTimeLeft)
+			timer:start()
+		else
+			timer:stealth(true)
+		end
 	end,
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)

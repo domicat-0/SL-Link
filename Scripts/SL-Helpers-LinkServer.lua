@@ -1,3 +1,6 @@
+-- LinkServerURL = "10.19.11.67"
+LinkServerURL = "link-server-next.fly.dev"
+
 local GetFileContents = function(path)
 	local contents = ""
 
@@ -47,7 +50,13 @@ GetLinkSongs = function()
 	end
 
 	if #groups > 0 then
-		local songs = SONGMAN:GetSongsInGroup(groups[1])
+		local songs = {}
+		for group in ivalues(groups) do
+			local group_songs = SONGMAN:GetSongsInGroup(group)
+			for song in ivalues(group_songs) do
+				songs[#songs+1] = song
+			end
+		end
 		return songs
 	else
 		return nil
@@ -97,11 +106,7 @@ local RoomInfoHandler = function(data)
 	SL.Global.LinkRoomCounts = data["player_counts"]
 	SL.Global.LinkRoomGrades = data["grades"]
 	SL.Global.LinkRoomLocked = data["locked"]
-	if SCREENMAN:GetTopScreen():GetName() == "ScreenPreRoomSelect" then
-		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
-	elseif SCREENMAN:GetTopScreen():GetName() == "ScreenSelectLinkMode" then
-		SCREENMAN:GetTopScreen():playcommand("Refresh")
-	end
+	local topscreen = SCREENMAN:GetTopScreen()
 end
 
 local DownloadHandler = function(data)
@@ -115,6 +120,7 @@ end
 local PlayerUpdateHandler = function(data)
 	SL.Global.LinkMatchPlayerList = data["players"]
 	SL.Global.LinkMatchPlayerNames = data["names"]
+	SL.Global.LinkPlayerReady = data["ready"]
 	if SCREENMAN:GetTopScreen() then
 		SCREENMAN:GetTopScreen():playcommand("Refresh")
 	end
@@ -129,9 +135,8 @@ local TournamentPlayerUpdateHandler = function(data)
 end
 
 local PlayerReadyHandler = function(data)
-	local tag = data["player"]
-	SL.Global.LinkPlayerReady[tag] = true
-	if SCREENMAN:GetTopScreen() then
+	SL.Global.LinkPlayerReady = data["ready"]
+	if SCREENMAN:GetTopScreen() == "ScreenPreRoundLink" or SCREENMAN:GetTopScreen() == "ScreenRoomMatchLink" then
 		SCREENMAN:GetTopScreen():playcommand("Refresh")
 	end
 end
@@ -152,6 +157,7 @@ local TournamentRoundStartHandler = function(data)
 end
 
 local DraftStartHandler = function(data)
+	
 	SL.Global.LinkMatchPlayerList = data["players"]
 	local song_hashes = data["songs"]
 	SL.Global.LinkDraftSongList = {}
@@ -161,10 +167,14 @@ local DraftStartHandler = function(data)
 	for i, hash in ipairs(song_hashes) do
 		SL.Global.LinkDraftSongList[i] = GetSongFromHash(hash)
 	end
+	SL.Global.LinkMatchTimeLeft = data["time_left"]
+	SOUND:PlayOnce(THEME:GetPathS("Common", "Start"))
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
 local GameStartHandler = function(data)
+	SL.Global.LinkMatchTimeLeft = data["time_left"]
+	
 	local song_hashes = data["songs"]
 	SL.Global.LinkSelectedSongs = {}
 	for i, hash in ipairs(song_hashes) do
@@ -176,10 +186,13 @@ local GameStartHandler = function(data)
 	for tag in ivalues(SL.Global.LinkMatchPlayerList) do
 		SL.Global.LinkPlayerScores[tag] = 0
 	end
+	SOUND:PlayOnce(THEME:GetPathS("Common", "Start"))
 	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 end
 
 local RoundStartHandler = function(data)
+	SL.Global.LinkMatchTimeLeft = data["time_left"]
+
 	local songlist = SL.Global.LinkSelectedSongs
 	local active_song = songlist[SL.Global.LinkRoundNumber]
 	GAMESTATE:SetCurrentPlayMode('PlayMode_Regular')
@@ -195,13 +208,18 @@ local RoundStartHandler = function(data)
 end
 
 local RoundEndHandler = function(data)
+	SL.Global.LinkMatchTimeLeft = data["time_left"]
+	
 	SL.Global.LinkMatchPlayerList = data["player_list"]
 	for tag in ivalues(SL.Global.LinkMatchPlayerList) do
 		SL.Global.LinkPlayerScores[tag] = data[tag]["score"]
 		SL.Global.LinkPlayerResults[tag] = data[tag]["result"]
 	end
 	SL.Global.LinkRoundNumber = SL.Global.LinkRoundNumber + 1
-	SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+	if SCREENMAN:GetTopScreen():GetName() ~= "ScreenEvaluationStage" then
+		SOUND:PlayOnce(THEME:GetPathS("Common", "Start"))
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
+	end
 end
 
 local TournamentRoundEndHandler = function(data)
@@ -220,6 +238,7 @@ local TournamentRoundEndHandler = function(data)
 end
 
 local GameEndHandler = function(data)
+	SL.Global.LinkMatchTimeLeft = data["time_left"]
 	if SL.Global.LinkTournament then
 		SL.Global.LinkRoundExit = true
 	else
@@ -228,6 +247,7 @@ local GameEndHandler = function(data)
 	local topscreen = SCREENMAN:GetTopScreen()
 	if topscreen:GetName() == "ScreenRoomMatchLink" or topscreen:GetName() == "ScreenSelectMusicLink" then
 		if SL.Global.LinkTournament then
+			SOUND:PlayOnce(THEME:GetPathS("Common", "Start"))
 			topscreen:SetNextScreenName("ScreenWaitTournamentLink"):StartTransitioningScreen("SM_GoToNextScreen")
 		else
 			topscreen:SetNextScreenName("ScreenBackLink"):StartTransitioningScreen("SM_GoToNextScreen")
@@ -245,10 +265,12 @@ local TournamentEndHandler = function(data)
 	end
 	SL.Global.LinkExit = true
 	local topscreen = SCREENMAN:GetTopScreen()
-	if topscreen:GetName() == "ScreenRoomTournamentLink" then
-		topscreen:SetNextScreenName("ScreenBackLink"):StartTransitioningScreen("SM_GoToNextScreen")
-	elseif topscreen:GetName() ~= "ScreenResultsTournamentLink" then
-		topscreen:SetNextScreenName("ScreenResultsTournamentLink"):StartTransitioningScreen("SM_GoToNextScreen")
+	if topscreen then
+		if topscreen:GetName() == "ScreenRoomTournamentLink" then
+			topscreen:SetNextScreenName("ScreenBackLink"):StartTransitioningScreen("SM_GoToNextScreen")
+		elseif topscreen:GetName() ~= "ScreenResultsTournamentLink" then
+			topscreen:SetNextScreenName("ScreenResultsTournamentLink"):StartTransitioningScreen("SM_GoToNextScreen")
+		end
 	end
 end
 
@@ -318,14 +340,11 @@ LoadWS = function()
 				}
 
 				SL.Global.LinkWS:Send(JsonEncode(event))
-				local event = {
-					type="WebSocketMessageType_Message",
-					data={
-						type="request_rooms",
-						name=PROFILEMAN:GetPlayerName(PLAYER_1)
-					}
-				}
-				SL.Global.LinkWS:Send(JsonEncode(event))
+				topscreen = SCREENMAN:GetTopScreen()
+				if topscreen:GetName() == "ScreenPreRoomSelect" then
+					topscreen:StartTransitioningScreen("SM_GoToNextScreen")
+				end
+				
 			elseif msgType == "Message" then
 				MessageHandler(message)
 			elseif msgType == "Close" then
@@ -373,17 +392,20 @@ end
 
 
 LinkDownloadSong = function(file)
+	SL.Global.LinkDownloadReady = false
+	SL.Global.LinkDownloadWaiting = true
 	SM("Download attempted...")
 	request = NETWORK:HttpRequest{
 		url="https://link-server-next.fly.dev:8081/download?hash="..file,
 		method="GET",
 		downloadFile=file..".zip",
 		onResponse=function(response)
-			FILEMAN:Unzip("/Downloads/"..file..".zip", "/Songs/out")
+			FILEMAN:Unzip("/Downloads/"..file..".zip", "/Songs/SL-Link Extras")
 			SL.Global.LinkSongMasterList = GetLinkSongs()
-			SCREENMAN:SetNewScreen("ScreenReloadSongsSSL")
 		end
 	}
+	SL.Global.LinkDownloadWaiting = false
+	SL.Global.LinkDownloadReady = true
 	return request
 end
 

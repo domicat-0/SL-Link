@@ -8,6 +8,14 @@ local t = Def.ActorFrame {
 		SL.Global.LinkMatchPlayerNames = {}
 		SL.Global.LinkTournamentPlayerNames = {}
 		SL.Global.LinkPlayerReady = {}
+
+		SL.Global.LinkRoomList = {}
+		SL.Global.LinkRoomTournament = {}
+		SL.Global.LinkTimeLeft = {}
+		SL.Global.LinkRoomNames = {}
+		SL.Global.LinkRoomCounts = {}
+		SL.Global.LinkRoomGrades = {}
+		SL.Global.LinkRoomLocked = {}
 		LoadWS()
 	end
 }
