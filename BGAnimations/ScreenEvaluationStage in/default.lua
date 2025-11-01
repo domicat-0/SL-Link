@@ -31,6 +31,20 @@ else
 		InitCommand=function(self)
 			self:xy(_screen.cx, 100)
 		end,
+		OnCommand=function(self)
+			if SL.Global.GameMode == "Link" and SL.Global.LinkMatchTimeLeft ~= nil then
+				local timer = SCREENMAN:GetTopScreen():GetChild("Timer")
+				if timer ~= nil then
+					if SL.Global.LinkMatchTimeLeft ~= nil then
+						SCREENMAN:SystemMessage(SL.Global.LinkMatchTimeLeft .. " " .. timer:GetSeconds())
+						timer:SetSeconds(SL.Global.LinkMatchTimeLeft)
+						timer:start()
+					else
+						timer:stealth(true)
+					end
+				end
+			end
+		end,
 		Def.Quad{
 			InitCommand=function(self)
 				-- 100 + 140 = 240. SL is 480 tall, so 240 is the center.

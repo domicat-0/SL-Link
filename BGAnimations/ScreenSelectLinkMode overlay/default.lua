@@ -5,6 +5,7 @@ local page_length = 6 -- fixed
 local accepting_input = true
 local password_mode = false
 local password = ""
+local refresh_time = GetTimeSinceStart()
 
 SL.Global.LinkInputCallback = function(event)
 	if not event or not event.PlayerNumber or not accepting_input then
@@ -108,6 +109,9 @@ local t = Def.ActorFrame {
 	InitCommand=function(self)
 		af = self
 		self:xy(_screen.cx, _screen.cy)
+		if SL.Global.LinkRoomList == nil then
+			SL.Global.LinkRoomList = {}
+		end
 	end,
 	OnCommand=function(self)
 		local event = {
@@ -119,7 +123,7 @@ local t = Def.ActorFrame {
 				}
 		LinkSendMessage(event, 10)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
-		self:playcommand("Refresh")
+		self:queuecommand("Refresh")
 	end,
 	RefreshCommand=function(self)
 		for i, child in ipairs(self:GetChild("RoomBar")) do
@@ -130,6 +134,8 @@ local t = Def.ActorFrame {
 			child:aux(auxval)
 			child:playcommand("Refresh")
 		end
+		refresh_time = GetTimeSinceStart()
+		self:GetChild("CycleTimer"):sleep(0.5):queuecommand("Refresh")
 	end
 }
 
@@ -142,5 +148,18 @@ t[#t+1] = Def.Quad {
 for idx=1,6 do
 	t[#t+1] = LoadActor("./room_bar.lua", {idx, 0, 0, -175 + idx*50})
 end
+
+t[#t+1] = Def.Actor {
+	Name="CycleTimer",
+	OnCommand=function(self)
+		refresh_time = GetTimeSinceStart()
+	end,
+	RefreshCommand=function(self)
+		if GetTimeSinceStart() - refresh_time >= 0.25 then
+			af:playcommand("Refresh")
+			accepting_input = true
+		end
+	end
+}
 
 return t

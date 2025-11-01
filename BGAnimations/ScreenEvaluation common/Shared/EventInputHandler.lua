@@ -20,7 +20,11 @@ local function input(event)
 	-- but only if the event.type is not a Release.
 	if (event.GameButton == "Start" or event.GameButton == "Back") and event.type ~= "InputEventType_Release" then
 		overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):visible(false)
-
+		if SL.Global.GameMode == "Link" and SL.Global.LinkMatchTimeLeft then
+			local timer = SCREENMAN:GetTopScreen():GetChild("Timer")
+			SL.Global.LinkMatchTimeLeft = timer:GetSeconds()
+			SCREENMAN:SystemMessage("AAA" .. SL.Global.LinkMatchTimeLeft)
+		end
 		for player in ivalues(PlayerNumber) do
 			if GAMESTATE:IsSideJoined(player) then
 				local pn = ToEnumShortString(player)

@@ -35,6 +35,16 @@ local t = Def.ActorFrame {
 		local tpos = SL.Global.LinkPlayerTournamentPositions[SL.Global.LinkPlayerTag]
 		current_page = (tpos - (tpos % page_length)) / page_length + 1
 		self:playcommand("Refresh")
+		
+		local timer = SCREENMAN:GetTopScreen():GetChild("Timer")
+		if timer ~= nil then
+			if SL.Global.LinkMatchTimeLeft ~= nil then
+				timer:SetSeconds(SL.Global.LinkMatchTimeLeft)
+				timer:start()
+			else
+				timer:stealth(true)
+			end
+		end
 	end,
 	RefreshCommand=function(self)
 		for i, child in ipairs(self:GetChild("ResultBar")) do

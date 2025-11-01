@@ -49,7 +49,7 @@ af[#af+1] = LoadFont("Common Normal")..{
 
 af[#af+1] = LoadFont("Common Normal")..{
 	Name="",
-	Text=result,
+	Text=string.format("%.2f", result),
 	InitCommand = function(self)
 		self:horizalign(2)
 		self:zoom(1.5)

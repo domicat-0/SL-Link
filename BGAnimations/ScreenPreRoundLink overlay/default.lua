@@ -25,6 +25,15 @@ local t = Def.ActorFrame {
 	end,
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(SL.Global.LinkInputCallback)
+		local timer = SCREENMAN:GetTopScreen():GetChild("Timer")
+		if timer ~= nil then
+			if SL.Global.LinkMatchTimeLeft ~= nil then
+				timer:SetSeconds(SL.Global.LinkMatchTimeLeft)
+				timer:start()
+			else
+				timer:stealth(true)
+			end
+		end
 		if SL.Global.LinkRoundStart then
 			SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen")
 		end
@@ -33,7 +42,13 @@ local t = Def.ActorFrame {
 				child:diffuse(1, 1, 1, 1)
 			end
 		end
+		self:playcommand("Refresh")
 	end,
+	RefreshCommand=function(self)
+		for child in ivalues(self:GetChild("")) do
+			child:playcommand("Refresh")
+		end
+	end
 }
 
 t[#t+1] = Def.Quad {
@@ -47,6 +62,10 @@ t[#t+1] = LoadActor("./tile.lua", {active_song, -200, -80, "main"})
 for i,song in ipairs(songlist) do
 	local song_actor = LoadActor("./tile.lua", {song, (-400+100*i), 100, "side"})
 	t[#t+1] = song_actor
+end
+
+for idx=1,6 do
+	t[#t+1] = LoadActor("./resultbar.lua", {idx, 0, 100, -195 + idx*50})
 end
 
 t[#t+1] = LoadActor( THEME:GetPathS("ScreenSelectMaster", "change") )..{ Name="Change", IsAction=true, SupportPan=false }
