@@ -328,7 +328,7 @@ LoadWS = function()
 		},
 		handshakeTimeout=2,
 		pingInterval=2,
-		automaticReconnect=false,
+		automaticReconnect=true,
 		onMessage=function(message)
 			local msgType = ToEnumShortString(message.type)
 			if msgType == "Open" then
