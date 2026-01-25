@@ -42,6 +42,21 @@ local t = Def.ActorFrame {
 				child:diffuse(1, 1, 1, 1)
 			end
 		end
+		if active_song then
+			SL.Global.ActiveModifiers.MusicRate = 1
+			for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+				local pn = ToEnumShortString(player)
+				if SL.Global.LinkCmodStatus then
+					if (active_song:GetDisplayFullTitle():lower():match("no cmod") or
+                    active_song:GetTranslitFullTitle():lower():match("no cmod")) then
+						SL[pn].ActiveModifiers.SpeedModType = "M"
+					else
+						SL[pn].ActiveModifiers.SpeedModType = "C"
+					end
+				end
+				ApplyMods(player)
+			end
+		end
 		self:playcommand("Refresh")
 	end,
 	RefreshCommand=function(self)

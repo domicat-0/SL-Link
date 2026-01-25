@@ -1,6 +1,9 @@
 local t = Def.ActorFrame {
 	OnCommand=function(self)
+		SL.Global.LinkSpeedmodStatus = {}
 		for player in ivalues(GAMESTATE:GetHumanPlayers()) do
+			local pn = ToEnumShortString(player)
+			SL.Global.LinkCmodStatus = (SL[pn].ActiveModifiers.SpeedModType == "C")
 			ApplyMods(player)
 		end
 		SL.Global.LinkMatchPlayerList = {}
